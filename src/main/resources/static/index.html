@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapuescuela - Gestión de ventas</title>
+
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Mapuescuela</h1>
+        <p>Sistema de gestión de ventas</p>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>Catálogo de productos</h2>
+
+            <div id="productos">
+                <p>Cargando productos...</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Generar pedido</h2>
+
+            <form id="formPedido">
+
+                <label for="cliente">Cliente</label>
+                <select id="cliente" required>
+                    <option value="">Seleccione un cliente</option>
+                </select>
+
+                <label for="producto">Producto</label>
+                <select id="producto" required>
+                    <option value="">Seleccione un producto</option>
+                </select>
+
+                <label for="cantidad">Cantidad</label>
+                <input
+                    type="number"
+                    id="cantidad"
+                    min="1"
+                    value="1"
+                    required
+                >
+
+                <label for="modalidad">Modalidad de entrega</label>
+                <select id="modalidad" required>
+                    <option value="RETIRO">Retiro en local</option>
+                    <option value="DESPACHO">Despacho a domicilio</option>
+                </select>
+
+                <button type="submit">
+                    Generar pedido
+                </button>
+
+            </form>
+
+            <div id="resultadoPedido"></div>
+        </section>
+
+        <section>
+            <h2>Pedidos registrados</h2>
+
+            <button id="btnActualizarPedidos">
+                Actualizar pedidos
+            </button>
+
+            <div id="pedidos">
+                <p>Cargando pedidos...</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Adjuntar comprobante de pago</h2>
+
+            <form id="formComprobante">
+
+                <label for="pedidoComprobante">
+                    Número de pedido
+                </label>
+
+                <input
+                    type="number"
+                    id="pedidoComprobante"
+                    min="1"
+                    required
+                >
+
+                <label for="archivoComprobante">
+                    Archivo del comprobante
+                </label>
+
+                <input
+                    type="file"
+                    id="archivoComprobante"
+                    required
+                >
+
+                <button type="submit">
+                    Subir comprobante
+                </button>
+
+            </form>
+
+            <div id="resultadoComprobante"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Mapuescuela - Proyecto Integración de Plataformas</p>
+    </footer>
+
+    <script src="app.js"></script>
+
+</body>
+</html>

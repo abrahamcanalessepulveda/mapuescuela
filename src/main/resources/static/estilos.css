@@ -1,0 +1,133 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f4f4;
+    color: #222222;
+}
+
+header {
+    background-color: #ffffff;
+    padding: 25px 20px;
+    text-align: center;
+    border-bottom: 1px solid #dddddd;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin-top: 8px;
+    color: #666666;
+}
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+section {
+    background-color: #ffffff;
+    margin-bottom: 25px;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input,
+select,
+button {
+    padding: 10px;
+    font-size: 16px;
+}
+
+input,
+select {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+}
+
+button {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.producto-card {
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.producto-card h3 {
+    margin-top: 0;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+.mensaje-exito {
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid #9acb9a;
+    background-color: #eef9ee;
+    border-radius: 5px;
+}
+
+.mensaje-error {
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid #d8a0a0;
+    background-color: #fff0f0;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #666666;
+}
