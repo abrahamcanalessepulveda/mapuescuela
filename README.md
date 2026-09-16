@@ -7,6 +7,9 @@
 - Cristóbal Celis
 - Abraham Canales
 
+Video GUI usuario https://youtu.be/ismbgR4EPbQ
+Video profesor https://youtu.be/rT2rYMvOxzg 
+
 Proyecto desarrollado para la asignatura **Integración de Plataformas**.
 
 El proyecto consiste en una aplicación para apoyar el proceso de venta de productos donados de Mapuescuela.
