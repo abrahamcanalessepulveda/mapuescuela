@@ -52,12 +52,12 @@ public class ComprobantePagoService {
 
         if (!"PENDIENTE_PAGO".equals(pedido.getEstado())) {
             throw new RuntimeException(
-                    "Solo se puede adjuntar un comprobante a un pedido pendiente de pago");
+                    "El pedido no se encuentra pendiente de pago");
         }
 
         if (archivo == null || archivo.isEmpty()) {
             throw new RuntimeException(
-                    "Debe adjuntar un comprobante");
+                    "Debe adjuntar un comprobante de pago");
         }
 
         try {
@@ -77,22 +77,17 @@ public class ComprobantePagoService {
                 nombreOriginal = "comprobante";
             }
 
-            nombreOriginal =
-                    Path.of(nombreOriginal)
-                            .getFileName()
-                            .toString();
-
-            String nombreGuardado =
+            String nombreArchivo =
                     UUID.randomUUID()
                             + "_"
                             + nombreOriginal;
 
-            Path destino =
-                    carpeta.resolve(nombreGuardado);
+            Path rutaArchivo =
+                    carpeta.resolve(nombreArchivo);
 
             Files.copy(
                     archivo.getInputStream(),
-                    destino,
+                    rutaArchivo,
                     StandardCopyOption.REPLACE_EXISTING);
 
             ComprobantePago comprobante =
@@ -100,26 +95,23 @@ public class ComprobantePagoService {
 
             comprobante.setPedido(pedido);
             comprobante.setArchivo(
-                    destino.toString());
-
+                    rutaArchivo.toString());
             comprobante.setEstadoValidacion(
                     "PENDIENTE");
 
-            comprobante =
-                    comprobantePagoRepository
-                            .save(comprobante);
+            ComprobantePago comprobanteGuardado =
+                    comprobantePagoRepository.save(
+                            comprobante);
 
-            pedido.setEstado(
-                    "PAGO_EN_REVISION");
-
+            pedido.setEstado("PAGO_EN_REVISION");
             pedidoRepository.save(pedido);
 
-            return comprobante;
+            return comprobanteGuardado;
 
         } catch (IOException e) {
 
             throw new RuntimeException(
-                    "Error al guardar el comprobante",
+                    "Error al guardar el comprobante de pago",
                     e);
         }
     }
@@ -137,8 +129,7 @@ public class ComprobantePagoService {
                                 new RuntimeException(
                                         "Comprobante no encontrado"));
 
-        Pedido pedido =
-                comprobante.getPedido();
+        Pedido pedido = comprobante.getPedido();
 
         if (!"PENDIENTE".equals(
                 comprobante.getEstadoValidacion())) {
@@ -154,33 +145,20 @@ public class ComprobantePagoService {
                     "El pedido no se encuentra en revisión de pago");
         }
 
-        if (resultado == null
-                || (!resultado.equalsIgnoreCase("APROBADO")
-                && !resultado.equalsIgnoreCase("RECHAZADO"))) {
+        if (resultado == null) {
 
             throw new RuntimeException(
-                    "El resultado debe ser APROBADO o RECHAZADO");
+                    "Debe indicar el resultado de la validación");
         }
 
-        comprobante.setObservacion(
-                observacion);
-
-        if (resultado.equalsIgnoreCase(
-                "APROBADO")) {
+        if ("APROBADO".equalsIgnoreCase(resultado)) {
 
             List<DetallePedido> detalles =
                     detallePedidoRepository
-                            .findAll()
-                            .stream()
-                            .filter(detalle ->
-                                    detalle.getPedido()
-                                            .getIdPedido()
-                                            .equals(
-                                                    pedido.getIdPedido()))
-                            .toList();
+                            .findByPedido_IdPedido(
+                                    pedido.getIdPedido());
 
-            for (DetallePedido detalle :
-                    detalles) {
+            for (DetallePedido detalle : detalles) {
 
                 Producto producto =
                         detalle.getProducto();
@@ -194,8 +172,7 @@ public class ComprobantePagoService {
                 }
             }
 
-            for (DetallePedido detalle :
-                    detalles) {
+            for (DetallePedido detalle : detalles) {
 
                 Producto producto =
                         detalle.getProducto();
@@ -204,28 +181,33 @@ public class ComprobantePagoService {
                         producto.getStock()
                                 - detalle.getCantidad());
 
-                productoRepository.save(
-                        producto);
+                productoRepository.save(producto);
             }
 
             comprobante.setEstadoValidacion(
                     "APROBADO");
 
-            pedido.setEstado(
-                    "PAGO_APROBADO");
+            pedido.setEstado("PAGO_APROBADO");
 
-        } else {
+        } else if ("RECHAZADO".equalsIgnoreCase(
+                resultado)) {
 
             comprobante.setEstadoValidacion(
                     "RECHAZADO");
 
-            pedido.setEstado(
-                    "PAGO_RECHAZADO");
+            pedido.setEstado("PAGO_RECHAZADO");
+
+        } else {
+
+            throw new RuntimeException(
+                    "El resultado debe ser APROBADO o RECHAZADO");
         }
+
+        comprobante.setObservacion(observacion);
 
         pedidoRepository.save(pedido);
 
-        return comprobantePagoRepository
-                .save(comprobante);
+        return comprobantePagoRepository.save(
+                comprobante);
     }
 }

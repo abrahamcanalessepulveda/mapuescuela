@@ -41,6 +41,15 @@ public class Pedido {
     @Column(name = "flowable_process_instance_id", length = 100)
     private String flowableProcessInstanceId;
 
+    @Column(name = "nombre_persona_retira", length = 150)
+    private String nombrePersonaRetira;
+
+    @Column(name = "rut_persona_retira", length = 20)
+    private String rutPersonaRetira;
+
+    @Column(name = "fecha_retiro")
+    private LocalDateTime fechaRetiro;
+
     public Pedido() {
     }
 
@@ -96,7 +105,42 @@ public class Pedido {
         return flowableProcessInstanceId;
     }
 
-    public void setFlowableProcessInstanceId(String flowableProcessInstanceId) {
-        this.flowableProcessInstanceId = flowableProcessInstanceId;
+    public void setFlowableProcessInstanceId(
+            String flowableProcessInstanceId) {
+
+        this.flowableProcessInstanceId =
+                flowableProcessInstanceId;
+    }
+
+    public String getNombrePersonaRetira() {
+        return nombrePersonaRetira;
+    }
+
+    public void setNombrePersonaRetira(
+            String nombrePersonaRetira) {
+
+        this.nombrePersonaRetira =
+                nombrePersonaRetira;
+    }
+
+    public String getRutPersonaRetira() {
+        return rutPersonaRetira;
+    }
+
+    public void setRutPersonaRetira(
+            String rutPersonaRetira) {
+
+        this.rutPersonaRetira =
+                rutPersonaRetira;
+    }
+
+    public LocalDateTime getFechaRetiro() {
+        return fechaRetiro;
+    }
+
+    public void setFechaRetiro(
+            LocalDateTime fechaRetiro) {
+
+        this.fechaRetiro = fechaRetiro;
     }
 }

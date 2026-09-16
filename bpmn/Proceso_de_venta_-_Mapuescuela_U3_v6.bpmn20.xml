@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
+  <process id="procesoVentaMapuescuelaV3" name="Proceso de venta - Mapuescuela U3" isExecutable="true" flowable:candidateStarterGroups="flowableUser">
+    <documentation>Proceso de venta de productos de Mapuescuela, desde la generacion del pedido y el pago mediante transferencia bancaria hasta la validacion del comprobante, preparacion y entrega del pedido.</documentation>
+    <userTask id="FormTask_93" name="Registrar envío y número de seguimiento" flowable:assignee="${initiator}" flowable:formKey="registrarEnvioNumeroSeguimiento" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_74" name="Validar comprobante de pago" flowable:assignee="${initiator}" flowable:formKey="validarComprobantePago" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_71" name="Adjuntar comprobante de pago" flowable:assignee="${initiator}" flowable:formKey="adjuntar_comprobante_pago" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_90" name="Registrar retiro en el local" flowable:assignee="${initiator}" flowable:formKey="registrarRetiroLocal" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_66" name="Registrar datos y generar pedido" flowable:assignee="${initiator}" flowable:formKey="registrarDatosPedido" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_86" name="Empacar y preparar pedido" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="ServiceTask_68" name="Notificar datos de transferencia" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_95" name="Registrar pedido disponible para retiro en local" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="Exclusive_Databased_Gateway_22"></exclusiveGateway>
+    <exclusiveGateway id="Exclusive_Databased_Gateway_35" name="Modalidad entrega"></exclusiveGateway>
+    <startEvent id="startnoneevent1" name="Solicitud de compra iniciada" flowable:initiator="initiator" flowable:formFieldValidation="false"></startEvent>
+    <endEvent id="EndNoneEvent_48" name="Pedido cancelado"></endEvent>
+    <endEvent id="EndNoneEvent_50" name="Compra despachada a domicilio"></endEvent>
+    <endEvent id="EndNoneEvent_54" name="Compra entregada en el local"></endEvent>
+    <sequenceFlow id="SequenceFlow_77" sourceRef="FormTask_74" targetRef="Exclusive_Databased_Gateway_22"></sequenceFlow>
+    <boundaryEvent id="IntermediateTimerEventBoundary_74" attachedToRef="FormTask_71" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT24H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="SequenceFlow_103" sourceRef="IntermediateTimerEventBoundary_74" targetRef="ServiceTask_79"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_76" sourceRef="FormTask_71" targetRef="FormTask_74"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_98" sourceRef="FormTask_66" targetRef="ServiceTask_68"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_72" sourceRef="ServiceTask_68" targetRef="FormTask_71"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_102" sourceRef="ServiceTask_79" targetRef="EndNoneEvent_48"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_65" sourceRef="startnoneevent1" targetRef="FormTask_66"></sequenceFlow>
+    <serviceTask id="ServiceTask_79" name="Registrar pedido como cancelado y mantener stock" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[PUT]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://host.docker.internal:8080/api/pedidos/${idPedido}/cancelar]]></flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+<serviceTask id="ServiceTask_83"
+             name="Confirmar pago y descontar stock"
+             flowable:type="external-worker"
+             flowable:topic="confirmarPago">
+</serviceTask>
+    <userTask id="FormTask_94" name="Informar rechazo a cliente" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="SequenceFlow_94" name="Despacho a domicilio" sourceRef="Exclusive_Databased_Gateway_35" targetRef="FormTask_93">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${modalidadEntrega == 'despachoDomicilio'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="HttpTask_FinalizarRetiro" name="Finalizar pedido retirado" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[PUT]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://host.docker.internal:8080/api/pedidos/${idPedido}/retirado]]></flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-6F0250E2-89AC-40D4-9BA7-FA8E0760F3F6" sourceRef="HttpTask_FinalizarRetiro" targetRef="EndNoneEvent_54"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_92" sourceRef="FormTask_90" targetRef="HttpTask_FinalizarRetiro"></sequenceFlow>
+    <serviceTask id="HttpTask_ListoRetiro" name="Actualizar pedido a listo para retiro" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[PUT]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://host.docker.internal:8080/api/pedidos/${idPedido}/listo-retiro]]></flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="HttpTask_RegistrarDespacho" name="Registrar despacho en sistema" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[POST]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://host.docker.internal:8080/api/despachos/${idPedido}/enviar]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type: application/json]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:expression><![CDATA[{
+  "numeroSeguimiento": "${numeroSeguimiento}"
+}]]></flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="SequenceFlow_95" sourceRef="FormTask_93" targetRef="HttpTask_RegistrarDespacho"></sequenceFlow>
+    <userTask id="UserTask_ConfirmarEntrega" name="Confirmar entrega del pedido" flowable:formFieldValidation="true"></userTask>
+    <sequenceFlow id="sid-C8D60829-A1BE-4477-9545-4A70A9854A68" sourceRef="HttpTask_RegistrarDespacho" targetRef="UserTask_ConfirmarEntrega"></sequenceFlow>
+    <serviceTask id="HttpTask_FinalizarDespacho" name="Finalizar entrega del pedido" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[PUT]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://host.docker.internal:8080/api/despachos/${idPedido}/entregado]]></flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-EE9EFD56-7E84-41C5-84AF-19CCE1E5F5C9" sourceRef="UserTask_ConfirmarEntrega" targetRef="HttpTask_FinalizarDespacho"></sequenceFlow>
+    <sequenceFlow id="sid-A86CC3B6-82F9-4098-A3BB-EBCF593457CC" sourceRef="HttpTask_FinalizarDespacho" targetRef="EndNoneEvent_50"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_99" name="Si" sourceRef="Exclusive_Databased_Gateway_22" targetRef="ServiceTask_83">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${resultadoValidacion == 'APROBADO'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_89" sourceRef="FormTask_86" targetRef="Exclusive_Databased_Gateway_35"></sequenceFlow>
+    <sequenceFlow id="sid-9C5717A6-5A18-4C24-BF22-65AD97EC72A5" sourceRef="FormTask_94" targetRef="ServiceTask_79"></sequenceFlow>
+    <serviceTask id="HttpTask_IniciarPreparacion" name="Iniciar preparación del pedido" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[PUT]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://host.docker.internal:8080/api/pedidos/${idPedido}/preparar]]></flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-0ABE5A05-7261-4F8E-B8E9-5B148F34B6AE" sourceRef="HttpTask_IniciarPreparacion" targetRef="FormTask_86"></sequenceFlow>
+    <sequenceFlow id="sid-81DCAC3D-185E-4237-B699-AA3DC537AE26" sourceRef="HttpTask_ListoRetiro" targetRef="FormTask_90"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_97" name="Retiro en local" sourceRef="FormTask_95" targetRef="HttpTask_ListoRetiro"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_91" name="Retiro en local" sourceRef="Exclusive_Databased_Gateway_35" targetRef="FormTask_95">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${modalidadEntrega == 'retiroLocal'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="HttpTask_RegistrarPagoRechazado" name="Registrar pago rechazado" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[PUT]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://host.docker.internal:8080/api/comprobantes/${idComprobante}/validar]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type: application/json]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:string><![CDATA[{
+  "resultado": "RECHAZADO",
+  "observacion": "Comprobante rechazado durante la validacion manual"
+}]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="SequenceFlow_100" sourceRef="ServiceTask_83" targetRef="HttpTask_IniciarPreparacion"></sequenceFlow>
+    <sequenceFlow id="sid-CCB38FF8-A32D-43E3-B96A-8124CB9E3B18" sourceRef="HttpTask_RegistrarPagoRechazado" targetRef="FormTask_94"></sequenceFlow>
+    <sequenceFlow id="SequenceFlow_81" name="No" sourceRef="Exclusive_Databased_Gateway_22" targetRef="HttpTask_RegistrarPagoRechazado">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${resultadoValidacion == 'RECHAZADO'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_procesoVentaMapuescuelaV3">
+    <bpmndi:BPMNPlane bpmnElement="procesoVentaMapuescuelaV3" id="BPMNPlane_procesoVentaMapuescuelaV3">
+      <bpmndi:BPMNShape bpmnElement="FormTask_93" id="BPMNShape_FormTask_93">
+        <omgdc:Bounds height="109.0" width="179.0" x="1595.6049098795177" y="545.496549751565"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask_74" id="BPMNShape_FormTask_74">
+        <omgdc:Bounds height="102.0" width="181.0" x="1068.9532891217884" y="197.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask_71" id="BPMNShape_FormTask_71">
+        <omgdc:Bounds height="96.0" width="183.0" x="828.6512278314304" y="200.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask_90" id="BPMNShape_FormTask_90">
+        <omgdc:Bounds height="78.88145222217832" width="87.6949799056938" x="2066.666584544715" y="371.37927388891075"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask_66" id="BPMNShape_FormTask_66">
+        <omgdc:Bounds height="85.0" width="146.00000000000006" x="409.1204758314306" y="206.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask_86" id="BPMNShape_FormTask_86">
+        <omgdc:Bounds height="80.0" width="151.0" x="1459.2" y="405.60774169762294"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ServiceTask_68" id="BPMNShape_ServiceTask_68">
+        <omgdc:Bounds height="84.0" width="126.0" x="617.1764907912429" y="206.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask_95" id="BPMNShape_FormTask_95">
+        <omgdc:Bounds height="80.0" width="100.0" x="1725.0" y="370.81999999999994"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Exclusive_Databased_Gateway_22" id="BPMNShape_Exclusive_Databased_Gateway_22">
+        <omgdc:Bounds height="40.0" width="40.0" x="1290.0" y="228.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Exclusive_Databased_Gateway_35" id="BPMNShape_Exclusive_Databased_Gateway_35">
+        <omgdc:Bounds height="40.0" width="40.0" x="1665.1049098795177" y="425.60774169762294"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startnoneevent1" id="BPMNShape_startnoneevent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="289.7360519130315" y="233.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndNoneEvent_48" id="BPMNShape_EndNoneEvent_48">
+        <omgdc:Bounds height="28.0" width="28.0" x="1129.4532891217884" y="585.996549751565"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndNoneEvent_50" id="BPMNShape_EndNoneEvent_50">
+        <omgdc:Bounds height="28.0" width="28.0" x="2289.695272177298" y="585.996549751565"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndNoneEvent_54" id="BPMNShape_EndNoneEvent_54">
+        <omgdc:Bounds height="28.0" width="28.0" x="2333.3332406150007" y="396.81999999999994"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="IntermediateTimerEventBoundary_74" id="BPMNShape_IntermediateTimerEventBoundary_74">
+        <omgdc:Bounds height="31.0" width="31.0" x="903.1199930790527" y="281.99951207608706"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ServiceTask_79" id="BPMNShape_ServiceTask_79">
+        <omgdc:Bounds height="77.0" width="116.0" x="1085.4532891217884" y="432.02915775156544"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ServiceTask_83" id="BPMNShape_ServiceTask_83">
+        <omgdc:Bounds height="85.0" width="131.0" x="1469.2" y="206.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="FormTask_94" id="BPMNShape_FormTask_94">
+        <omgdc:Bounds height="80.0" width="100.0" x="1260.0" y="430.52915775156544"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="HttpTask_FinalizarRetiro" id="BPMNShape_HttpTask_FinalizarRetiro">
+        <omgdc:Bounds height="73.33572816468217" width="91.30148153581013" x="2166.666660289215" y="370.3703692802077"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="HttpTask_ListoRetiro" id="BPMNShape_HttpTask_ListoRetiro">
+        <omgdc:Bounds height="63.37997325707829" width="124.66097913733961" x="1890.0" y="379.13001337146073"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="HttpTask_RegistrarDespacho" id="BPMNShape_HttpTask_RegistrarDespacho">
+        <omgdc:Bounds height="80.0" width="100.0" x="1830.0" y="559.996549751565"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask_ConfirmarEntrega" id="BPMNShape_UserTask_ConfirmarEntrega">
+        <omgdc:Bounds height="72.0" width="89.99999999999977" x="1983.3332545227506" y="563.996549751565"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="HttpTask_FinalizarDespacho" id="BPMNShape_HttpTask_FinalizarDespacho">
+        <omgdc:Bounds height="70.0" width="93.0" x="2133.3332485622864" y="564.996549751565"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="HttpTask_IniciarPreparacion" id="BPMNShape_HttpTask_IniciarPreparacion">
+        <omgdc:Bounds height="55.2031144951805" width="80.55035675812155" x="1494.4248216209392" y="327.01909412835295"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="HttpTask_RegistrarPagoRechazado" id="BPMNShape_HttpTask_RegistrarPagoRechazado">
+        <omgdc:Bounds height="40.0" width="70.0" x="1275.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_77" id="BPMNEdge_SequenceFlow_77" flowable:sourceDockerX="90.5" flowable:sourceDockerY="51.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="1249.9032891217225" y="248.5"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="248.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_99" id="BPMNEdge_SequenceFlow_99" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="65.5" flowable:targetDockerY="42.5">
+        <omgdi:waypoint x="1329.9455627223315" y="248.5"></omgdi:waypoint>
+        <omgdi:waypoint x="1469.2" y="248.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_89" id="BPMNEdge_SequenceFlow_89" flowable:sourceDockerX="75.5" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="1610.149999999869" y="445.60774169762294"></omgdi:waypoint>
+        <omgdi:waypoint x="1665.1049098795177" y="445.60774169762294"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-CCB38FF8-A32D-43E3-B96A-8124CB9E3B18" id="BPMNEdge_sid-CCB38FF8-A32D-43E3-B96A-8124CB9E3B18" flowable:sourceDockerX="35.0" flowable:sourceDockerY="39.5" flowable:targetDockerX="50.0" flowable:targetDockerY="1.0">
+        <omgdi:waypoint x="1310.0" y="369.95"></omgdi:waypoint>
+        <omgdi:waypoint x="1310.0" y="430.52915775156544"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-6F0250E2-89AC-40D4-9BA7-FA8E0760F3F6" id="BPMNEdge_sid-6F0250E2-89AC-40D4-9BA7-FA8E0760F3F6" flowable:sourceDockerX="90.30148153581013" flowable:sourceDockerY="36.667864082341055" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="2257.918141825005" y="407.03823336254874"></omgdi:waypoint>
+        <omgdi:waypoint x="2295.650691220013" y="407.0382333625488"></omgdi:waypoint>
+        <omgdi:waypoint x="2295.650691220013" y="410.81999999999994"></omgdi:waypoint>
+        <omgdi:waypoint x="2333.3332406150007" y="410.81999999999994"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9C5717A6-5A18-4C24-BF22-65AD97EC72A5" id="BPMNEdge_sid-9C5717A6-5A18-4C24-BF22-65AD97EC72A5" flowable:sourceDockerX="1.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="115.0" flowable:targetDockerY="38.5">
+        <omgdi:waypoint x="1259.999999999993" y="470.52915775156544"></omgdi:waypoint>
+        <omgdi:waypoint x="1201.403289121767" y="470.52915775156544"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-0ABE5A05-7261-4F8E-B8E9-5B148F34B6AE" id="BPMNEdge_sid-0ABE5A05-7261-4F8E-B8E9-5B148F34B6AE" flowable:sourceDockerX="40.27517837906066" flowable:sourceDockerY="54.2031144951805" flowable:targetDockerX="75.5" flowable:targetDockerY="1.0">
+        <omgdi:waypoint x="1534.6999999999998" y="382.17220862353344"></omgdi:waypoint>
+        <omgdi:waypoint x="1534.7" y="405.60774169762294"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-EE9EFD56-7E84-41C5-84AF-19CCE1E5F5C9" id="BPMNEdge_sid-EE9EFD56-7E84-41C5-84AF-19CCE1E5F5C9" flowable:sourceDockerX="89.09999999999978" flowable:sourceDockerY="36.0" flowable:targetDockerX="0.93" flowable:targetDockerY="35.0">
+        <omgdi:waypoint x="2073.28325452261" y="599.996549751565"></omgdi:waypoint>
+        <omgdi:waypoint x="2133.3332485622864" y="599.996549751565"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_102" id="BPMNEdge_SequenceFlow_102" flowable:sourceDockerX="58.0" flowable:sourceDockerY="38.5" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="1143.4532891217884" y="508.9791577515655"></omgdi:waypoint>
+        <omgdi:waypoint x="1143.4532891217884" y="585.996549751565"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_95" id="BPMNEdge_SequenceFlow_95" flowable:sourceDockerX="89.5" flowable:sourceDockerY="54.5" flowable:targetDockerX="1.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="1774.5549098795177" y="599.996549751565"></omgdi:waypoint>
+        <omgdi:waypoint x="1830.0" y="599.996549751565"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_97" id="BPMNEdge_SequenceFlow_97" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="1.1743004467277554" flowable:targetDockerY="31.68998662853915">
+        <omgdi:waypoint x="1824.9499999999366" y="410.81999999999994"></omgdi:waypoint>
+        <omgdi:waypoint x="1890.0" y="410.8199999999999"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_100" id="BPMNEdge_SequenceFlow_100" flowable:sourceDockerX="65.5" flowable:sourceDockerY="42.5" flowable:targetDockerX="40.27517837906066" flowable:targetDockerY="1.0">
+        <omgdi:waypoint x="1534.6999999999998" y="290.95000000000005"></omgdi:waypoint>
+        <omgdi:waypoint x="1534.6999999999998" y="327.01909412835295"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_76" id="BPMNEdge_SequenceFlow_76" flowable:sourceDockerX="91.5" flowable:sourceDockerY="48.0" flowable:targetDockerX="90.5" flowable:targetDockerY="51.0">
+        <omgdi:waypoint x="1011.6012278314304" y="248.5"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.9532891217884" y="248.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_98" id="BPMNEdge_SequenceFlow_98" flowable:sourceDockerX="73.00000000000003" flowable:sourceDockerY="42.5" flowable:targetDockerX="63.0" flowable:targetDockerY="42.0">
+        <omgdi:waypoint x="555.070475831382" y="248.5"></omgdi:waypoint>
+        <omgdi:waypoint x="617.1764907912011" y="248.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_65" id="BPMNEdge_SequenceFlow_65" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="73.00000000000003" flowable:targetDockerY="42.5">
+        <omgdi:waypoint x="319.68605133213794" y="248.5"></omgdi:waypoint>
+        <omgdi:waypoint x="409.1204758313826" y="248.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C8D60829-A1BE-4477-9545-4A70A9854A68" id="BPMNEdge_sid-C8D60829-A1BE-4477-9545-4A70A9854A68" flowable:sourceDockerX="99.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="0.8999999999999977" flowable:targetDockerY="36.0">
+        <omgdi:waypoint x="1929.95" y="599.996549751565"></omgdi:waypoint>
+        <omgdi:waypoint x="1983.3332545227465" y="599.996549751565"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_91" id="BPMNEdge_SequenceFlow_91" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="1685.1049098795177" y="425.60774169762294"></omgdi:waypoint>
+        <omgdi:waypoint x="1685.1049098795177" y="344.4097560380435"></omgdi:waypoint>
+        <omgdi:waypoint x="1775.0" y="344.4097560380435"></omgdi:waypoint>
+        <omgdi:waypoint x="1775.0" y="370.81999999999994"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_92" id="BPMNEdge_SequenceFlow_92" flowable:sourceDockerX="43.8474899528469" flowable:sourceDockerY="39.44072611108916" flowable:targetDockerX="0.9130148153581013" flowable:targetDockerY="36.66786408234108">
+        <omgdi:waypoint x="2154.311564450409" y="407.91420433893967"></omgdi:waypoint>
+        <omgdi:waypoint x="2166.666660289215" y="407.095425797249"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-A86CC3B6-82F9-4098-A3BB-EBCF593457CC" id="BPMNEdge_sid-A86CC3B6-82F9-4098-A3BB-EBCF593457CC" flowable:sourceDockerX="92.07000000000001" flowable:sourceDockerY="35.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="2226.283248562282" y="599.996549751565"></omgdi:waypoint>
+        <omgdi:waypoint x="2289.695272177298" y="599.996549751565"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_81" id="BPMNEdge_SequenceFlow_81" flowable:sourceDockerX="20.5" flowable:sourceDockerY="20.5" flowable:targetDockerX="35.0" flowable:targetDockerY="0.5">
+        <omgdi:waypoint x="1310.3827160493827" y="268.0551479654747"></omgdi:waypoint>
+        <omgdi:waypoint x="1310.0027607361963" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-81DCAC3D-185E-4237-B699-AA3DC537AE26" id="BPMNEdge_sid-81DCAC3D-185E-4237-B699-AA3DC537AE26" flowable:sourceDockerX="123.53575271590877" flowable:sourceDockerY="31.68998662853914" flowable:targetDockerX="0.5413270364547762" flowable:targetDockerY="39.44072611108921">
+        <omgdi:waypoint x="2014.6109791373065" y="410.8199999999999"></omgdi:waypoint>
+        <omgdi:waypoint x="2013.5357527159088" y="410.8199999999999"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_103" id="BPMNEdge_SequenceFlow_103" flowable:sourceDockerX="15.500000000000002" flowable:sourceDockerY="15.500000000000002" flowable:targetDockerX="58.0" flowable:targetDockerY="38.5">
+        <omgdi:waypoint x="918.5644544324543" y="312.9494149970703"></omgdi:waypoint>
+        <omgdi:waypoint x="918.0" y="470.52915775156544"></omgdi:waypoint>
+        <omgdi:waypoint x="1085.4532891217884" y="470.52915775156544"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_72" id="BPMNEdge_SequenceFlow_72" flowable:sourceDockerX="63.0" flowable:sourceDockerY="42.0" flowable:targetDockerX="91.5" flowable:targetDockerY="48.0">
+        <omgdi:waypoint x="743.1264907910048" y="248.5"></omgdi:waypoint>
+        <omgdi:waypoint x="828.6512278314304" y="248.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_94" id="BPMNEdge_SequenceFlow_94" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="89.5" flowable:targetDockerY="54.5">
+        <omgdi:waypoint x="1685.1049098795177" y="465.5512849192157"></omgdi:waypoint>
+        <omgdi:waypoint x="1685.1049098795177" y="545.496549751565"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

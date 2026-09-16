@@ -1,6 +1,7 @@
 package cl.mapuescuela.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +107,17 @@ public class PedidoService {
         pedido.setFlowableProcessInstanceId(
                 processInstanceId);
 
-        return pedidoRepository.save(pedido);
+        pedido = pedidoRepository.save(pedido);
+
+        flowableService.completarTarea(
+                pedido.getIdPedido(),
+                "Registrar datos y generar pedido");
+
+        flowableService.completarTarea(
+                pedido.getIdPedido(),
+                "Notificar datos de transferencia");
+
+        return pedido;
     }
 
     private String convertirModalidadParaFlowable(
@@ -176,6 +187,54 @@ public class PedidoService {
     }
 
     @Transactional
+    public Pedido registrarDatosRetiro(
+            Long idPedido,
+            String nombrePersonaRetira,
+            String rutPersonaRetira) {
+
+        Pedido pedido = pedidoRepository.findById(idPedido)
+                .orElseThrow(() ->
+                        new RuntimeException("Pedido no encontrado"));
+
+        if (!"LISTO_RETIRO".equals(pedido.getEstado())) {
+            throw new RuntimeException(
+                    "El pedido debe estar listo para retiro");
+        }
+
+        if (!"RETIRO".equalsIgnoreCase(
+                pedido.getModalidadEntrega())) {
+
+            throw new RuntimeException(
+                    "El pedido no corresponde a modalidad RETIRO");
+        }
+
+        if (nombrePersonaRetira == null
+                || nombrePersonaRetira.trim().isEmpty()) {
+
+            throw new RuntimeException(
+                    "Debe ingresar el nombre de la persona que retira");
+        }
+
+        if (rutPersonaRetira == null
+                || rutPersonaRetira.trim().isEmpty()) {
+
+            throw new RuntimeException(
+                    "Debe ingresar el RUT de la persona que retira");
+        }
+
+        pedido.setNombrePersonaRetira(
+                nombrePersonaRetira.trim());
+
+        pedido.setRutPersonaRetira(
+                rutPersonaRetira.trim());
+
+        pedido.setFechaRetiro(
+                LocalDateTime.now());
+
+        return pedidoRepository.save(pedido);
+    }
+
+    @Transactional
     public Pedido registrarRetiro(Long idPedido) {
 
         Pedido pedido = pedidoRepository.findById(idPedido)
@@ -192,6 +251,15 @@ public class PedidoService {
 
             throw new RuntimeException(
                     "El pedido no corresponde a modalidad RETIRO");
+        }
+
+        if (pedido.getNombrePersonaRetira() == null
+                || pedido.getNombrePersonaRetira().isBlank()
+                || pedido.getRutPersonaRetira() == null
+                || pedido.getRutPersonaRetira().isBlank()) {
+
+            throw new RuntimeException(
+                    "Debe registrar los datos de la persona que retira antes de finalizar el pedido");
         }
 
         pedido.setEstado("FINALIZADO");

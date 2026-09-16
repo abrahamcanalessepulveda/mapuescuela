@@ -16,17 +16,21 @@ import org.springframework.web.multipart.MultipartFile;
 import cl.mapuescuela.dto.ValidarComprobanteRequest;
 import cl.mapuescuela.model.ComprobantePago;
 import cl.mapuescuela.service.ComprobantePagoService;
+import cl.mapuescuela.service.FlowableService;
 
 @RestController
 @RequestMapping("/api/comprobantes")
 public class ComprobantePagoController {
 
     private final ComprobantePagoService comprobantePagoService;
+    private final FlowableService flowableService;
 
     public ComprobantePagoController(
-            ComprobantePagoService comprobantePagoService) {
+            ComprobantePagoService comprobantePagoService,
+            FlowableService flowableService) {
 
         this.comprobantePagoService = comprobantePagoService;
+        this.flowableService = flowableService;
     }
 
     @PostMapping
@@ -39,7 +43,16 @@ public class ComprobantePagoController {
                         idPedido,
                         archivo);
 
-        Map<String, Object> respuesta = new LinkedHashMap<>();
+        flowableService.registrarIdComprobante(
+                idPedido,
+                comprobante.getIdComprobante());
+
+        flowableService.completarTarea(
+                idPedido,
+                "Adjuntar comprobante de pago");
+
+        Map<String, Object> respuesta =
+                new LinkedHashMap<>();
 
         respuesta.put(
                 "idComprobante",
@@ -75,7 +88,8 @@ public class ComprobantePagoController {
                         request.getResultado(),
                         request.getObservacion());
 
-        Map<String, Object> respuesta = new LinkedHashMap<>();
+        Map<String, Object> respuesta =
+                new LinkedHashMap<>();
 
         respuesta.put(
                 "idComprobante",

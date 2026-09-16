@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapuescuela - Administración</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Mapuescuela</h1>
+        <p>Área de administración</p>
+    </header>
+
+    <main>
+
+        <section id="seccionLogin">
+            <h2>Acceso administrativo</h2>
+
+            <p>
+                Ingrese sus credenciales para acceder a la gestión
+                de pedidos.
+            </p>
+
+            <form id="formLogin">
+
+                <label for="adminUsuario">
+                    Usuario
+                </label>
+
+                <input
+                    type="text"
+                    id="adminUsuario"
+                    autocomplete="username"
+                    required>
+
+                <label for="adminPassword">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="adminPassword"
+                    autocomplete="current-password"
+                    required>
+
+                <button type="submit">
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+            <div id="resultadoLogin"></div>
+        </section>
+
+        <section
+            id="seccionAdministracion"
+            style="display: none;">
+
+            <h2>Gestión de pedidos</h2>
+
+            <p>
+                Desde esta sección se gestionan las tareas
+                administrativas asociadas al proceso de venta.
+            </p>
+
+            <button id="btnCerrarSesion">
+                Cerrar sesión
+            </button>
+
+            <hr>
+
+            <h3>Consultar pedido</h3>
+
+            <form id="formConsultarPedido">
+
+                <label for="adminPedido">
+                    Número de pedido
+                </label>
+
+                <input
+                    type="number"
+                    id="adminPedido"
+                    min="1"
+                    required>
+
+                <button type="submit">
+                    Consultar tarea actual
+                </button>
+
+            </form>
+
+            <div id="resultadoAdmin"></div>
+
+            <div
+                id="accionesPedido"
+                style="display: none;">
+
+                <h3>Acciones disponibles</h3>
+
+                <div id="detalleTarea"></div>
+
+                <div id="botonesAcciones"></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>
+            Mapuescuela - Proyecto Integración de Plataformas
+        </p>
+    </footer>
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

@@ -1,9 +1,12 @@
 package cl.mapuescuela.dto;
 
+import java.time.LocalDateTime;
+
 public class RegistrarDespachoRequest {
 
     private String empresaTransporte;
     private String numeroSeguimiento;
+    private LocalDateTime fechaEnvio;
 
     public RegistrarDespachoRequest() {
     }
@@ -22,5 +25,13 @@ public class RegistrarDespachoRequest {
 
     public void setNumeroSeguimiento(String numeroSeguimiento) {
         this.numeroSeguimiento = numeroSeguimiento;
+    }
+
+    public LocalDateTime getFechaEnvio() {
+        return fechaEnvio;
+    }
+
+    public void setFechaEnvio(LocalDateTime fechaEnvio) {
+        this.fechaEnvio = fechaEnvio;
     }
 }

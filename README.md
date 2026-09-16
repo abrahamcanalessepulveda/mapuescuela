@@ -1,86 +1,89 @@
 # Proyecto Mapuescuela
 
-Integrantes Grupo 1
-Alexis Rosales
-Camilo Quezada
-Cristóbal Celis
-Abraham Canales
+## Integrantes Grupo 1
 
-Proyecto desarrollado para la asignatura Integración de Plataformas.
+- Alexis Rosales
+- Camilo Quezada
+- Cristóbal Celis
+- Abraham Canales
 
-El objetivo del proyecto es apoyar a Mapuescuela en la gestión de la venta de productos donados, permitiendo registrar productos, clientes, pedidos, comprobantes de pago y las distintas formas de entrega.
+Proyecto desarrollado para la asignatura **Integración de Plataformas**.
 
-Para el desarrollo se utilizó BPMN y Flowable para administrar el proceso de venta, además de Java con Spring Boot, servicios REST y una base de datos MySQL.
+El proyecto consiste en una aplicación para apoyar el proceso de venta de productos donados de Mapuescuela.
+
+Durante las tres unidades se fue desarrollando el proceso, comenzando con el modelamiento BPMN y posteriormente incorporando Web Services, Spring Boot, MySQL y Flowable.
 
 ## Objetivo
 
-Desarrollar una solución funcional que permita gestionar el proceso principal de venta de Mapuescuela.
+Desarrollar una aplicación que permita manejar el proceso principal de venta de Mapuescuela.
 
-El sistema permite realizar operaciones desde la generación del pedido hasta su entrega o cancelación, dependiendo de las decisiones tomadas durante el proceso.
+El sistema permite registrar clientes, productos, pedidos y comprobantes de pago, además de controlar si el pedido será retirado en el local o enviado por despacho.
 
-También se implementó un plazo de 24 horas para que el cliente pueda adjuntar el comprobante de pago. Si el comprobante no es ingresado dentro del plazo, Flowable puede ejecutar automaticamente la cancelación del pedido.
+También se agregó un plazo de 24 horas para adjuntar el comprobante de pago. Si el comprobante no es ingresado dentro de ese tiempo, el proceso puede continuar por la ruta de cancelación.
 
 ## Desarrollo por unidades
 
 ### Unidad 1
 
-Durante la Unidad 1 se realizó principalmente el modelamiento BPMN del proceso de venta.
+En la Unidad 1 se realizó principalmente el modelamiento BPMN del proceso de venta.
 
-Se desarrollaron:
+Se trabajó en:
 
 - Modelo AS-IS.
 - Modelo TO-BE.
-- Formularios para las tareas del proceso.
-- Registro de datos del pedido.
-- Carga de comprobante.
-- Validación del comprobante.
-- Registro de retiro.
-- Registro de despacho.
+- Formularios.
+- Registro del pedido.
+- Carga y validación del comprobante.
+- Retiro de productos.
+- Despacho a domicilio.
+- Temporizador de 24 horas.
 
-Los archivos originales de esta unidad se encuentran en:
+Los archivos de esta unidad se encuentran en:
 
 `documentacion/unidad1`
 
-Estos modelos y formularios fueron utilizados como base para continuar el desarrollo en las unidades siguientes.
+Este trabajo fue utilizado como base para las siguientes unidades.
 
 ### Unidad 2
 
-En la Unidad 2 se comenzó la implementación de Web Services utilizando Java.
+En la Unidad 2 se comenzó a trabajar con Web Services utilizando Java.
 
-Se desarrolló un proyecto SOAP con operaciones relacionadas con:
+Se desarrollaron operaciones relacionadas con:
 
 - Registro de clientes.
 - Generación de pedidos.
 - Procesamiento de pagos.
 - Actualización del estado de los pedidos.
 
-También se realizaron modificaciones al proceso BPMN para comenzar a relacionar las actividades del proceso con los servicios desarrollados.
+También se realizaron cambios al BPMN para comenzar a relacionar el proceso con los servicios desarrollados.
 
-Los archivos de esta etapa se encuentran en:
+Los archivos de esta unidad se encuentran en:
 
 `documentacion/unidad2`
 
 ### Unidad 3
 
-En la Unidad 3 se continuó el proyecto hasta obtener una solución integrada y funcional.
+En la Unidad 3 se integraron los diferentes componentes desarrollados durante el proyecto.
 
-Se implementó:
+Se trabajó con:
 
-- Backend con Spring Boot.
-- Base de datos MySQL.
+- Spring Boot.
+- MySQL.
 - Servicios REST.
 - Interfaz web.
-- Integración con Flowable.
-- Tareas humanas.
+- Flowable.
+- User Tasks.
 - Tareas HTTP.
-- Actualización de estados.
-- Control de inventario.
+- External Worker.
 - Retiro y despacho.
-- Cancelación automática por tiempo.
+- Control de inventario.
+- Cancelación de pedidos.
 
-La versión final del proceso BPMN utilizada en las pruebas se encuentra en:
+La versión final del BPMN utilizada para las pruebas es:
 
-`bpmn/Proceso_de_venta_-_Mapuescuela_U3_v5.bpmn20.xml`
+`bpmn/Proceso_de_venta_-_Mapuescuela_U3_v6.bpmn20.xml`
+
+Esta corresponde a la versión V6 del proceso.
 
 ## Tecnologías utilizadas
 
@@ -88,7 +91,6 @@ La versión final del proceso BPMN utilizada en las pruebas se encuentra en:
 - Spring Boot 4.0.8
 - Maven
 - MySQL 8
-- Spring Data JPA
 - HTML
 - CSS
 - JavaScript
@@ -101,25 +103,29 @@ La versión final del proceso BPMN utilizada en las pruebas se encuentra en:
 
 ## Funcionamiento general
 
-La interfaz web se comunica con el backend mediante servicios REST.
+La interfaz web se comunica con Spring Boot mediante servicios REST.
 
-El backend se encarga de procesar las operaciones y guardar la información en MySQL.
+Spring Boot se encarga de realizar las operaciones del sistema y guardar la información en MySQL.
 
-Cuando se genera un pedido, la aplicación también inicia una instancia del proceso correspondiente en Flowable.
+Cuando se genera un pedido, también se inicia una instancia del proceso BPMN en Flowable.
 
-De forma resumida:
+De forma simple:
 
 `Interfaz web -> Spring Boot -> MySQL`
 
-Para el proceso automatizado:
+Y para el proceso BPMN:
 
 `Spring Boot -> Flowable -> Servicios REST -> MySQL`
 
-Flowable permite controlar las tareas humanas y las tareas automaticas que forman parte del proceso.
+En la versión V6 también se agregó un External Worker para la confirmación del pago:
+
+`Flowable -> confirmarPago -> ConfirmarPagoWorker -> MySQL`
+
+Flowable controla el avance del proceso y Spring Boot realiza la lógica de la aplicación.
 
 ## Funciones implementadas
 
-Actualmente el sistema permite:
+El sistema permite:
 
 - Consultar productos.
 - Consultar clientes.
@@ -128,9 +134,8 @@ Actualmente el sistema permite:
 - Seleccionar retiro o despacho.
 - Adjuntar comprobantes.
 - Validar comprobantes.
-- Aprobar pagos.
-- Rechazar pagos.
-- Descontar stock cuando corresponde.
+- Aprobar o rechazar pagos.
+- Actualizar el stock.
 - Preparar pedidos.
 - Registrar retiro.
 - Registrar despacho.
@@ -140,93 +145,212 @@ Actualmente el sistema permite:
 
 ## Proceso BPMN
 
-El proceso BPMN utilizado en Flowable considera las principales actividades de la venta.
-
-De forma general el flujo es:
+El proceso de venta funciona de forma general de la siguiente manera:
 
 1. Se genera el pedido.
-2. Se registran los datos necesarios.
-3. Se informan los datos para realizar la transferencia.
-4. Se espera el comprobante.
-5. Un voluntario valida el comprobante.
+2. Se registran los datos del comprador.
+3. Se entregan los datos para realizar la transferencia.
+4. El cliente adjunta el comprobante.
+5. Un voluntario revisa el comprobante.
 6. El pago puede ser aprobado o rechazado.
-7. Si es aprobado se actualiza el inventario.
+7. Si es aprobado, se actualiza el inventario.
 8. Se prepara el pedido.
-9. Se selecciona retiro o despacho.
+9. Se continúa por retiro o despacho.
 10. Se registra la entrega.
 11. El proceso finaliza.
 
-También existe un temporizador configurado como:
+También se utiliza un temporizador:
 
 `PT24H`
 
-Este temporizador controla el plazo disponible para adjuntar el comprobante de pago.
+Este representa el plazo de 24 horas disponible para adjuntar el comprobante.
 
-Si se cumple el plazo sin recibir el comprobante, Flowable ejecuta la ruta de cancelación del pedido.
+Durante las pruebas se comprobó la ruta del temporizador mediante la ejecución controlada del Timer Job de Flowable.
+
+## External Worker
+
+En la versión V6 se agregó un External Worker para la actividad:
+
+`Confirmar pago y descontar stock`
+
+El tópico utilizado es:
+
+`confirmarPago`
+
+El componente desarrollado en Spring Boot es:
+
+`ConfirmarPagoWorker`
+
+Cuando Flowable llega a esta actividad genera un trabajo externo.
+
+`ConfirmarPagoWorker` consulta estos trabajos y, cuando encuentra uno del tópico `confirmarPago`, utiliza el identificador del comprobante para realizar la aprobación correspondiente.
+
+Para esto se utiliza la variable:
+
+`idComprobante`
+
+Después de realizar correctamente la operación, el Worker informa a Flowable que el trabajo terminó y el proceso puede continuar.
+
+## Variables utilizadas en Flowable
+
+Entre las principales variables utilizadas se encuentran:
+
+- `idPedido`
+- `idComprobante`
+- `modalidadEntrega`
+- `resultadoValidacion`
+
+`idPedido` permite relacionar el proceso con el pedido guardado en MySQL.
+
+`idComprobante` es utilizado por el External Worker para saber qué comprobante debe procesar.
+
+`modalidadEntrega` permite decidir entre retiro y despacho.
+
+`resultadoValidacion` permite decidir si el pago fue aprobado o rechazado.
 
 ## Interfaz web
 
-Se desarrolló una interfaz web simple utilizando HTML, CSS y JavaScript.
+Se desarrolló una interfaz sencilla utilizando HTML, CSS y JavaScript.
 
 Desde la interfaz se puede:
 
-- visualizar productos;
-- seleccionar cliente;
-- generar pedidos;
-- visualizar pedidos registrados;
-- adjuntar comprobantes de pago.
+- Ver productos.
+- Seleccionar un cliente.
+- Crear un pedido.
+- Seleccionar retiro o despacho.
+- Ver pedidos.
+- Adjuntar un comprobante.
 
-La interfaz se conecta directamente con los servicios REST de Spring Boot.
-
-Durante las pruebas se comprobó que al generar un pedido desde la interfaz, este queda registrado en la base de datos y se inicia su proceso en Flowable.
-
-También se comprobó la carga de comprobantes desde la interfaz y la actualización del estado del pedido.
+La interfaz se comunica con los servicios REST de Spring Boot.
 
 ## Base de datos
 
 La aplicación utiliza MySQL.
 
-Base de datos utilizada:
+La base de datos utilizada es:
 
 `mapuescuela`
 
-Entre las principales tablas utilizadas se encuentran:
+Entre las tablas principales se encuentran:
 
-- cliente
-- producto
-- pedido
-- detalle_pedido
-- comprobante_pago
-- despacho
+- `cliente`
+- `producto`
+- `pedido`
+- `detalle_pedido`
+- `comprobante_pago`
+- `despacho`
 
-Las credenciales privadas no se guardan directamente en el repositorio.
+La contraseña de MySQL no se guarda directamente en el proyecto.
 
-La contraseña de MySQL debe configurarse mediante la variable de entorno:
+Se utiliza la variable de entorno:
 
 `DB_PASSWORD`
 
 ## Flowable y Docker
 
-Para las pruebas se utilizaron dos contenedores de Flowable:
+Para ejecutar Flowable se utilizaron dos contenedores Docker:
 
-- Flowable UI: puerto 8081.
-- Flowable REST: puerto 8082.
+- Flowable UI: puerto `8081`
+- Flowable REST: puerto `8082`
 
-Se debe verificar que Docker Desktop se encuentre funcionando y que ambos contenedores estén iniciados.
+Spring Boot utiliza el puerto:
 
-El contenedro de Flowable REST es utilizado por Spring Boot para iniciar y consultar las instancias del proceso.
+`8080`
+
+Flowable REST permite que Spring Boot inicie y consulte los procesos.
+
+También es utilizado por `ConfirmarPagoWorker` para trabajar con los External Workers.
 
 ## Ejecutar el proyecto
 
-Primero se debe tener:
+Antes de iniciar se debe tener funcionando:
 
 - Java 17.
-- MySQL funcionando.
-- Docker Desktop funcionando.
-- Flowable UI y REST iniciados.
-- Variable `DB_PASSWORD` configurada.
+- MySQL.
+- Docker Desktop.
+- Flowable UI.
+- Flowable REST.
 
-Desde PowerShell ingresar a la carpeta del proyecto:
+También se debe configurar la variable `DB_PASSWORD`.
+
+Desde PowerShell se puede ingresar a la carpeta del proyecto:
 
 ```powershell
 cd "C:\Users\Abraham2026\Desktop\Proyectos VS Code\mapuescuela"
+```
+
+Para compilar:
+
+```powershell
+.\mvnw.cmd clean compile
+```
+
+Para ejecutar:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+Si todo funciona correctamente, Spring Boot se inicia en el puerto `8080`.
+
+Al iniciar la aplicación también queda funcionando `ConfirmarPagoWorker` para consultar los trabajos externos del tópico `confirmarPago`.
+
+## Pruebas realizadas
+
+Durante el desarrollo se probaron diferentes situaciones del proceso:
+
+- Compra aprobada con retiro.
+- Compra aprobada con despacho.
+- Pago rechazado.
+- Cancelación mediante el temporizador.
+- Conservación del stock cuando el pago no es aprobado.
+- External Worker `confirmarPago`.
+- Finalización completa del proceso.
+
+Para la prueba final de V6 se utilizó el Pedido N.º 13.
+
+En esta prueba se comprobó que el External Worker recibió y procesó el trabajo `confirmarPago`.
+
+Después de esto, Flowable continuó con la preparación y retiro del pedido hasta finalizar el proceso.
+
+Al terminar se comprobó que el pedido quedó en estado:
+
+`FINALIZADO`
+
+También se verificó que no quedaran tareas activas en Flowable.
+
+## Versiones del BPMN
+
+Durante el desarrollo se fueron generando diferentes versiones del proceso para realizar correcciones y agregar nuevas funciones.
+
+La versión final utilizada en las pruebas fue V6:
+
+`Proceso_de_venta_-_Mapuescuela_U3_v6.bpmn20.xml`
+
+La clave utilizada por el proceso en Flowable se mantiene como:
+
+`procesoVentaMapuescuelaV3`
+
+La versión registrada en Flowable es:
+
+`version: 6`
+
+La principal modificación de V6 fue cambiar la actividad de confirmación del pago para utilizar el External Worker `confirmarPago`.
+
+## Control de versiones
+
+Para guardar los cambios del proyecto se utilizó Git y GitHub.
+
+El repositorio contiene el código de la aplicación, los archivos BPMN y los documentos utilizados durante las diferentes unidades.
+
+Esto permite mantener un respaldo del proyecto y revisar los cambios realizados durante su desarrollo.
+
+## Resumen
+
+El proyecto comenzó en la Unidad 1 con el modelamiento BPMN.
+
+En la Unidad 2 se trabajó con Web Services en Java.
+
+Finalmente, en la Unidad 3 se integraron Spring Boot, MySQL, Flowable, servicios REST, tareas humanas, tareas HTTP y un External Worker.
+
+Con esto se logró tener un prototipo funcional del proceso principal de venta de Mapuescuela.
