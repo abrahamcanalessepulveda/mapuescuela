@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -22,7 +23,7 @@
 
             <p>
                 Ingrese sus credenciales para acceder a la gestión
-                de pedidos.
+                de pedidos, inventario y clientes.
             </p>
 
             <form id="formLogin">
@@ -60,52 +61,327 @@
             id="seccionAdministracion"
             style="display: none;">
 
-            <h2>Gestión de pedidos</h2>
+            <h2>Panel de administración</h2>
 
             <p>
-                Desde esta sección se gestionan las tareas
-                administrativas asociadas al proceso de venta.
+                Seleccione la sección que desea administrar.
             </p>
 
-            <button id="btnCerrarSesion">
+            <button type="button" id="btnMostrarPedidos">
+                Pedidos
+            </button>
+
+            <button type="button" id="btnMostrarInventario">
+                Inventario
+            </button>
+
+            <button type="button" id="btnMostrarClientes">
+                Clientes
+            </button>
+
+            <button type="button" id="btnCerrarSesion">
                 Cerrar sesión
             </button>
 
             <hr>
 
-            <h3>Consultar pedido</h3>
+            <section id="panelPedidos">
 
-            <form id="formConsultarPedido">
+                <h2>Gestión de pedidos</h2>
 
-                <label for="adminPedido">
-                    Número de pedido
-                </label>
+                <p>
+                    Desde esta sección se gestionan las tareas
+                    administrativas asociadas al proceso de venta.
+                </p>
 
-                <input
-                    type="number"
-                    id="adminPedido"
-                    min="1"
-                    required>
+                <h3>Consultar pedido</h3>
 
-                <button type="submit">
-                    Consultar tarea actual
-                </button>
+                <form id="formConsultarPedido">
 
-            </form>
+                    <label for="adminPedido">
+                        Número de pedido
+                    </label>
 
-            <div id="resultadoAdmin"></div>
+                    <input
+                        type="number"
+                        id="adminPedido"
+                        min="1"
+                        required>
 
-            <div
-                id="accionesPedido"
+                    <button type="submit">
+                        Consultar tarea actual
+                    </button>
+
+                </form>
+
+                <div id="resultadoAdmin"></div>
+
+                <div
+                    id="accionesPedido"
+                    style="display: none;">
+
+                    <h3>Acciones disponibles</h3>
+
+                    <div id="detalleTarea"></div>
+
+                    <div id="botonesAcciones"></div>
+
+                </div>
+
+            </section>
+
+            <section
+                id="panelInventario"
                 style="display: none;">
 
-                <h3>Acciones disponibles</h3>
+                <h2>Gestión de inventario</h2>
 
-                <div id="detalleTarea"></div>
+                <p>
+                    Consulte los productos registrados, agregue nuevos
+                    productos y actualice sus datos o existencias.
+                </p>
 
-                <div id="botonesAcciones"></div>
+                <button
+                    type="button"
+                    id="btnActualizarInventario">
+                    Actualizar listado
+                </button>
 
-            </div>
+                <button
+                    type="button"
+                    id="btnNuevoProducto">
+                    Agregar producto
+                </button>
+
+                <div id="resultadoInventario"></div>
+
+                <div
+                    id="listadoInventario"
+                    class="tabla-contenedor">
+                </div>
+
+                <section
+                    id="panelFormularioProducto"
+                    style="display: none;">
+
+                    <h3 id="tituloFormularioProducto">
+                        Agregar producto
+                    </h3>
+
+                    <form id="formProducto">
+
+                        <input
+                            type="hidden"
+                            id="inventarioIdProducto">
+
+                        <label for="inventarioNombre">
+                            Nombre
+                        </label>
+
+                        <input
+                            type="text"
+                            id="inventarioNombre"
+                            maxlength="150"
+                            required>
+
+                        <label for="inventarioDescripcion">
+                            Descripción
+                        </label>
+
+                        <textarea
+                            id="inventarioDescripcion"
+                            rows="3"></textarea>
+
+                        <label for="inventarioCategoria">
+                            Categoría
+                        </label>
+
+                        <input
+                            type="text"
+                            id="inventarioCategoria"
+                            maxlength="100">
+
+                        <label for="inventarioPrecio">
+                            Precio ($)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="inventarioPrecio"
+                            min="0"
+                            step="1"
+                            required>
+
+                        <label for="inventarioStock">
+                            Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            id="inventarioStock"
+                            min="0"
+                            step="1"
+                            required>
+
+                        <label for="inventarioEstado">
+                            Estado
+                        </label>
+
+                        <select
+                            id="inventarioEstado"
+                            required>
+
+                            <option value="DISPONIBLE">
+                                Disponible
+                            </option>
+
+                            <option value="NO_DISPONIBLE">
+                                No disponible
+                            </option>
+
+                        </select>
+
+                        <label for="inventarioImagen">
+                            Imagen (ruta o URL)
+                        </label>
+
+                        <input
+                            type="text"
+                            id="inventarioImagen"
+                            maxlength="500">
+
+                        <button type="submit">
+                            Guardar producto
+                        </button>
+
+                        <button
+                            type="button"
+                            id="btnCancelarProducto">
+                            Cancelar
+                        </button>
+
+                    </form>
+
+                </section>
+
+            </section>
+
+            <section
+                id="panelClientes"
+                style="display: none;">
+
+                <h2>Gestión de clientes</h2>
+
+                <p>
+                    Consulte los clientes registrados, agregue nuevos
+                    clientes y actualice sus datos de contacto.
+                </p>
+
+                <button
+                    type="button"
+                    id="btnActualizarClientes">
+                    Actualizar listado
+                </button>
+
+                <button
+                    type="button"
+                    id="btnNuevoCliente">
+                    Agregar cliente
+                </button>
+
+                <div id="resultadoClientes"></div>
+
+                <div
+                    id="listadoClientes"
+                    class="tabla-contenedor">
+                </div>
+
+                <section
+                    id="panelFormularioCliente"
+                    style="display: none;">
+
+                    <h3 id="tituloFormularioCliente">
+                        Agregar cliente
+                    </h3>
+
+                    <form id="formCliente">
+
+                        <input
+                            type="hidden"
+                            id="clienteId">
+
+                        <label for="clienteRut">
+                            RUT
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteRut"
+                            maxlength="20"
+                            required>
+
+                        <label for="clienteRazonSocial">
+                            Razón social
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteRazonSocial"
+                            maxlength="150"
+                            required>
+
+                        <label for="clienteNombreContacto">
+                            Nombre de contacto
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteNombreContacto"
+                            maxlength="150">
+
+                        <label for="clienteEmail">
+                            Correo electrónico
+                        </label>
+
+                        <input
+                            type="email"
+                            id="clienteEmail"
+                            maxlength="150"
+                            required>
+
+                        <label for="clienteTelefono">
+                            Teléfono
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteTelefono"
+                            maxlength="30">
+
+                        <label for="clienteDireccion">
+                            Dirección
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteDireccion"
+                            maxlength="255">
+
+                        <button type="submit">
+                            Guardar cliente
+                        </button>
+
+                        <button
+                            type="button"
+                            id="btnCancelarCliente">
+                            Cancelar
+                        </button>
+
+                    </form>
+
+                </section>
+
+            </section>
 
         </section>
 
@@ -117,7 +393,9 @@
         </p>
     </footer>
 
-    <script src="admin.js"></script>
+<script src="admin.js"></script>
+<script src="inventario.js"></script>
+<script src="clientes.js"></script>
 
 </body>
 
