@@ -310,6 +310,28 @@ Para ejecutar Flowable se utilizaron dos contenedores Docker:
 - Flowable UI: puerto `8081`
 - Flowable REST: puerto `8082`
 
+## Configuración de red Docker para Flowable
+
+Para permitir la comunicación entre Flowable UI y Flowable REST se utiliza
+una red Docker compartida llamada `mapuescuela-net`.
+
+Crear la red:
+
+docker network create mapuescuela-net
+
+Conectar los contenedores:
+
+docker network connect mapuescuela-net flowable-mapuescuela
+docker network connect mapuescuela-net flowable-rest-mapuescuela
+
+En Flowable Admin, el endpoint del Process Engine debe configurarse con:
+
+- Server address: http://flowable-rest-mapuescuela
+- Server port: 8080
+- Context root: /flowable-rest
+- REST root: service
+- Username: rest-admin
+
 Spring Boot utiliza el puerto:
 
 `8080`
