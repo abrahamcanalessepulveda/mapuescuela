@@ -1214,6 +1214,8 @@ function mostrarAdministracion() {
 
     document.getElementById("seccionAdministracion")
         .style.display = "block";
+
+    cargarListadoPedidos();
 }
 
 function mostrarLogin() {
@@ -1236,3 +1238,174 @@ function mostrarMensaje(
 
     contenedor.textContent = mensaje;
 }
+
+/* Listado y filtro de pedidos del panel administrativo */
+
+let pedidosAdministrativos = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+    const filtro = document.getElementById("filtroEstadoPedidos");
+    const actualizar = document.getElementById("btnActualizarPedidos");
+    const mostrarPedidos = document.getElementById("btnMostrarPedidos");
+
+    filtro.addEventListener("change", mostrarListadoPedidos);
+    actualizar.addEventListener("click", cargarListadoPedidos);
+
+    mostrarPedidos.addEventListener("click", () => {
+        marcarSeccionAdministrativa("btnMostrarPedidos");
+        cargarListadoPedidos();
+    });
+
+    document.getElementById("btnMostrarInventario")
+        .addEventListener("click", () => {
+            marcarSeccionAdministrativa("btnMostrarInventario");
+        });
+
+    document.getElementById("btnMostrarClientes")
+        .addEventListener("click", () => {
+            marcarSeccionAdministrativa("btnMostrarClientes");
+        });
+});
+
+function marcarSeccionAdministrativa(idBotonActivo) {
+    [
+        "btnMostrarPedidos",
+        "btnMostrarInventario",
+        "btnMostrarClientes"
+    ].forEach(id => {
+        const boton = document.getElementById(id);
+        const activo = id === idBotonActivo;
+
+        boton.classList.toggle("admin-nav-active", activo);
+
+        if (activo) {
+            boton.setAttribute("aria-current", "page");
+        } else {
+            boton.removeAttribute("aria-current");
+        }
+    });
+}
+
+async function cargarListadoPedidos() {
+    const resultado = document.getElementById("resultadoListadoPedidos");
+    const listado = document.getElementById("listadoPedidos");
+
+    resultado.textContent = "Cargando pedidos...";
+    listado.replaceChildren();
+
+    try {
+        const respuesta = await fetch("/api/pedidos", {
+            credentials: "same-origin"
+        });
+
+        if (respuesta.status === 401 || respuesta.status === 403) {
+            throw new Error(
+                "La sesión administrativa no está activa. Inicie sesión nuevamente."
+            );
+        }
+
+        if (!respuesta.ok) {
+            throw new Error(
+                "No fue posible obtener el listado de pedidos."
+            );
+        }
+
+        const datos = await respuesta.json();
+
+        if (!Array.isArray(datos)) {
+            throw new Error(
+                "El servidor no devolvió un listado válido de pedidos."
+            );
+        }
+
+        pedidosAdministrativos = datos;
+        mostrarListadoPedidos();
+
+    } catch (error) {
+        pedidosAdministrativos = [];
+        listado.replaceChildren();
+        resultado.textContent =
+            error.message || "Ocurrió un error al consultar los pedidos.";
+    }
+}
+
+function mostrarListadoPedidos() {
+    const resultado = document.getElementById("resultadoListadoPedidos");
+    const listado = document.getElementById("listadoPedidos");
+    const estadoSeleccionado =
+        document.getElementById("filtroEstadoPedidos").value;
+
+    listado.replaceChildren();
+
+    const pedidosFiltrados = pedidosAdministrativos.filter(pedido =>
+        !estadoSeleccionado || pedido.estado === estadoSeleccionado
+    );
+
+    resultado.textContent =
+        `Pedidos encontrados: ${pedidosFiltrados.length}`;
+
+    if (pedidosFiltrados.length === 0) {
+        listado.textContent = "No hay pedidos para el estado seleccionado.";
+        return;
+    }
+
+    const tabla = document.createElement("table");
+    const encabezado = document.createElement("thead");
+    const filaEncabezado = document.createElement("tr");
+
+    ["Pedido", "Estado", "Modalidad", "Acción"].forEach(titulo => {
+        const celda = document.createElement("th");
+        celda.textContent = titulo;
+        filaEncabezado.appendChild(celda);
+    });
+
+    encabezado.appendChild(filaEncabezado);
+    tabla.appendChild(encabezado);
+
+    const cuerpo = document.createElement("tbody");
+
+    pedidosFiltrados
+        .slice()
+        .sort((a, b) => b.idPedido - a.idPedido)
+        .forEach(pedido => {
+            const fila = document.createElement("tr");
+
+            [
+                `N.º ${pedido.idPedido}`,
+                formatearEstado(pedido.estado),
+                formatearModalidad(pedido.modalidadEntrega)
+            ].forEach(valor => {
+                const celda = document.createElement("td");
+                celda.textContent = valor ?? "";
+                fila.appendChild(celda);
+            });
+
+            const celdaAccion = document.createElement("td");
+            const boton = document.createElement("button");
+
+            boton.type = "button";
+            boton.textContent = "Ver detalle";
+
+            boton.addEventListener("click", async () => {
+                document.getElementById("adminPedido").value =
+                    pedido.idPedido;
+
+                await cargarPedido(pedido.idPedido);
+
+                document.getElementById("accionesPedido")
+                    .scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+            });
+
+            celdaAccion.appendChild(boton);
+            fila.appendChild(celdaAccion);
+            cuerpo.appendChild(fila);
+        });
+
+    tabla.appendChild(cuerpo);
+    listado.appendChild(tabla);
+}
+
+

@@ -6,9 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapuescuela - Administración</title>
     <link rel="stylesheet" href="estilos.css">
+    <style>
+        /* Estilos exclusivos del panel administrativo. */
+        body.admin-page { background: #edf2f8; }
+        .admin-page > header { background: #183153; color: #fff; border-bottom: 4px solid #3b82f6; }
+        .admin-page > header p { color: #dbeafe; }
+        .admin-page > header button { background: #fff; color: #183153; font-weight: 700; }
+        .admin-page .admin-nav { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px; margin: 18px 0 22px; background: #183153; border-radius: 8px; }
+        .admin-page .admin-nav button { background: #e8eef7; color: #183153; font-weight: 700; border: 2px solid transparent; }
+        .admin-page .admin-nav button:hover { background: #fff; opacity: 1; }
+        .admin-page .admin-nav button.admin-nav-active { background: #3b82f6; color: #fff; border-color: #bfdbfe; }
+        .admin-page .admin-nav #btnCerrarSesion { margin-left: auto; background: #fee2e2; color: #991b1b; }
+        .admin-page .admin-filtros { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 14px 0; }
+        .admin-page .admin-filtros label { display: block; margin-bottom: 6px; }
+        .admin-page .admin-filtros select { min-width: 210px; }
+        .admin-page .admin-filtros button { background: #183153; color: #fff; }
+        .admin-page #listadoPedidos button { background: #e0ecff; color: #183153; font-weight: 700; }
+        .admin-page #listadoPedidos tr:hover td { background: #f2f7ff; }
+        @media (max-width: 600px) { .admin-page .admin-nav #btnCerrarSesion { margin-left: 0; } }
+    </style>
 </head>
 
-<body>
+<body class="admin-page">
 
     <header>
         <h1>Mapuescuela</h1>
@@ -72,21 +91,20 @@
                 Seleccione la sección que desea administrar.
             </p>
 
-            <button type="button" id="btnMostrarPedidos">
-                Pedidos
-            </button>
-
-            <button type="button" id="btnMostrarInventario">
-                Inventario
-            </button>
-
-            <button type="button" id="btnMostrarClientes">
-                Clientes
-            </button>
-
-            <button type="button" id="btnCerrarSesion">
-                Cerrar sesión
-            </button>
+            <nav class="admin-nav" aria-label="Secciones de administración">
+                <button type="button" id="btnMostrarPedidos" class="admin-nav-active" aria-current="page">
+                    Pedidos
+                </button>
+                <button type="button" id="btnMostrarInventario">
+                    Inventario
+                </button>
+                <button type="button" id="btnMostrarClientes">
+                    Clientes
+                </button>
+                <button type="button" id="btnCerrarSesion">
+                    Cerrar sesión
+                </button>
+            </nav>
 
             <hr>
 
@@ -99,7 +117,30 @@
                     administrativas asociadas al proceso de venta.
                 </p>
 
-                <h3>Consultar pedido</h3>
+                <h3>Listado de pedidos</h3>
+                <p>Filtre los pedidos por estado y seleccione «Ver detalle» para consultar uno sin modificarlo.</p>
+                <div class="admin-filtros">
+                    <div>
+                        <label for="filtroEstadoPedidos">Estado del pedido</label>
+                        <select id="filtroEstadoPedidos">
+                            <option value="">Todos los estados</option>
+                            <option value="PENDIENTE_PAGO">Pendiente de pago</option>
+                            <option value="PAGO_EN_REVISION">Pago en revisión</option>
+                            <option value="PAGO_RECHAZADO">Pago rechazado</option>
+                            <option value="PAGO_APROBADO">Pago aprobado</option>
+                            <option value="EN_PREPARACION">En preparación</option>
+                            <option value="LISTO_RETIRO">Listo para retiro</option>
+                            <option value="ENVIADO">Enviado</option>
+                            <option value="FINALIZADO">Finalizado</option>
+                            <option value="CANCELADO">Cancelado</option>
+                        </select>
+                    </div>
+                    <button type="button" id="btnActualizarPedidos">Actualizar listado</button>
+                </div>
+                <div id="resultadoListadoPedidos" role="status" aria-live="polite"></div>
+                <div id="listadoPedidos" class="tabla-contenedor"></div>
+
+                <h3>Consultar pedido por número</h3>
 
                 <form id="formConsultarPedido">
 
@@ -398,6 +439,20 @@
         </p>
     </footer>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const botones = ["btnMostrarPedidos", "btnMostrarInventario", "btnMostrarClientes"]
+                .map(id => document.getElementById(id));
+            botones.forEach(boton => boton.addEventListener("click", () => {
+                botones.forEach(otro => {
+                    otro.classList.remove("admin-nav-active");
+                    otro.removeAttribute("aria-current");
+                });
+                boton.classList.add("admin-nav-active");
+                boton.setAttribute("aria-current", "page");
+            }));
+        });
+    </script>
     <script src="/seguridad.js"></script>
     <script src="admin.js"></script>
     <script src="inventario.js"></script>
