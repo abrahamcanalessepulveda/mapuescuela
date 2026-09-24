@@ -485,3 +485,9 @@ En la Unidad 3 se integraron Spring Boot, MySQL, Flowable, servicios REST, tarea
 Como resultado se obtuvo un MVP funcional del proceso principal de venta de Mapuescuela, donde se integran la interfaz web, los servicios desarrollados en Java, la base de datos MySQL y el proceso BPMN ejecutado mediante Flowable.
 
 El MVP utiliza clientes y productos previamente registrados en la base de datos y permite realizar el proceso de compra desde la generación del pedido hasta su retiro o despacho.
+## Video demostrativo
+
+Como evidencia del funcionamiento del MVP de MapuEscuela, se realizó un video demostrativo donde se presenta el funcionamiento de la aplicación y la ejecución del proceso de venta integrado con Flowable.
+
+**Video demostrativo del proyecto:**  
+https://youtu.be/3zf-ZYFmFbE
