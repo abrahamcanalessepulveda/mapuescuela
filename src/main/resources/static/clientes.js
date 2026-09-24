@@ -298,7 +298,7 @@ async function guardarCliente(evento) {
         : "Registrando cliente...";
 
     try {
-        const respuesta = await fetch(url, {
+        const respuesta = await fetchSeguro(url, {
             method: esEdicion ? "PUT" : "POST",
             credentials: "same-origin",
             headers: {

@@ -111,7 +111,7 @@ public class PedidoService {
 
         flowableService.completarTarea(
                 pedido.getIdPedido(),
-                "Registrar datos y generar pedido");
+                "Registrar datos de compra y generar pedido");
 
         flowableService.completarTarea(
                 pedido.getIdPedido(),

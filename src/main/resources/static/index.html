@@ -13,9 +13,144 @@
     <header>
         <h1>Mapuescuela</h1>
         <p>Sistema de gestión de ventas</p>
+
+        <button
+            type="button"
+            onclick="window.location.href='admin.html'">
+            Panel administrativo
+        </button>
     </header>
 
     <main>
+
+        <section>
+            <h2>Acceso de clientes</h2>
+
+            <div id="estadoSesion">
+                <p>Comprobando sesión...</p>
+            </div>
+
+            <div id="formulariosAcceso">
+
+                <h3>Iniciar sesión</h3>
+
+                <form id="formLogin">
+
+                    <label for="emailLogin">
+                        Correo electrónico
+                    </label>
+                    <input
+                        type="email"
+                        id="emailLogin"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <label for="passwordLogin">
+                        Contraseña
+                    </label>
+                    <input
+                        type="password"
+                        id="passwordLogin"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button type="submit">
+                        Iniciar sesión
+                    </button>
+
+                </form>
+
+                <div id="resultadoLogin" role="status"></div>
+
+                <h3>Registrar nuevo cliente</h3>
+
+                <form id="formRegistro">
+
+                    <label for="rutRegistro">RUT</label>
+                    <input
+                        type="text"
+                        id="rutRegistro"
+                        maxlength="20"
+                        required
+                    >
+
+                    <label for="razonSocialRegistro">
+                        Razón social o nombre
+                    </label>
+                    <input
+                        type="text"
+                        id="razonSocialRegistro"
+                        required
+                    >
+
+                    <label for="nombreContactoRegistro">
+                        Nombre de contacto
+                    </label>
+                    <input
+                        type="text"
+                        id="nombreContactoRegistro"
+                        required
+                    >
+
+                    <label for="emailRegistro">
+                        Correo electrónico
+                    </label>
+                    <input
+                        type="email"
+                        id="emailRegistro"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <label for="telefonoRegistro">
+                        Teléfono
+                    </label>
+                    <input
+                        type="tel"
+                        id="telefonoRegistro"
+                        required
+                    >
+
+                    <label for="direccionRegistro">
+                        Dirección
+                    </label>
+                    <input
+                        type="text"
+                        id="direccionRegistro"
+                        required
+                    >
+
+                    <label for="passwordRegistro">
+                        Contraseña
+                    </label>
+                    <input
+                        type="password"
+                        id="passwordRegistro"
+                        minlength="8"
+                        maxlength="72"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button type="submit">
+                        Registrar cliente
+                    </button>
+
+                </form>
+
+                <div id="resultadoRegistro" role="status"></div>
+
+            </div>
+
+            <div id="accionesSesion" hidden>
+                <button type="button" id="btnCerrarSesion">
+                    Cerrar sesión
+                </button>
+            </div>
+
+        </section>
 
         <section>
             <h2>Catálogo de productos</h2>
@@ -25,15 +160,15 @@
             </div>
         </section>
 
-        <section>
+        <section id="seccionPedido" hidden>
             <h2>Generar pedido</h2>
 
-            <form id="formPedido">
+            <p>
+                El pedido se asociará automáticamente
+                a la cuenta con la que iniciaste sesión.
+            </p>
 
-                <label for="cliente">Cliente</label>
-                <select id="cliente" required>
-                    <option value="">Seleccione un cliente</option>
-                </select>
+            <form id="formPedido">
 
                 <label for="producto">Producto</label>
                 <select id="producto" required>
@@ -61,14 +196,14 @@
 
             </form>
 
-            <div id="resultadoPedido"></div>
+            <div id="resultadoPedido" role="status"></div>
         </section>
 
-        <section>
-            <h2>Pedidos registrados</h2>
+        <section id="seccionPedidos" hidden>
+            <h2>Mis pedidos</h2>
 
-            <button id="btnActualizarPedidos">
-                Actualizar pedidos
+            <button type="button" id="btnActualizarPedidos">
+                Actualizar mis pedidos
             </button>
 
             <div id="pedidos">
@@ -76,7 +211,7 @@
             </div>
         </section>
 
-        <section>
+        <section id="seccionComprobante" hidden>
             <h2>Adjuntar comprobante de pago</h2>
 
             <form id="formComprobante">
@@ -108,7 +243,7 @@
 
             </form>
 
-            <div id="resultadoComprobante"></div>
+            <div id="resultadoComprobante" role="status"></div>
         </section>
 
     </main>
@@ -117,6 +252,7 @@
         <p>Mapuescuela - Proyecto Integración de Plataformas</p>
     </footer>
 
+    <script src="seguridad.js"></script>
     <script src="app.js"></script>
 
 </body>

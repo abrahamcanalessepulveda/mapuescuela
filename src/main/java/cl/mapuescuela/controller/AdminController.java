@@ -31,6 +31,7 @@ import cl.mapuescuela.repository.PedidoRepository;
 import cl.mapuescuela.service.DespachoService;
 import cl.mapuescuela.service.FlowableService;
 import cl.mapuescuela.service.PedidoService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -69,7 +70,8 @@ public class AdminController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(
             @RequestBody Map<String, String> request,
-            HttpSession session) {
+            HttpSession session,
+            HttpServletRequest httpRequest) {
 
         String username = request.get("username");
         String password = request.get("password");
@@ -92,6 +94,8 @@ public class AdminController {
 
         if (adminUsername.equals(username)
                 && adminPassword.equals(password)) {
+
+            httpRequest.changeSessionId();
 
             session.setAttribute(
                     "ADMIN_AUTENTICADO",
@@ -436,6 +440,19 @@ public class AdminController {
         Map<String, Object> variables =
                 obtenerVariables(request);
 
+        if ("Empacar y preparar pedido".equals(nombreTarea)) {
+            pedidoService.iniciarPreparacion(idPedido);
+        }
+
+        if ("Registrar pedido disponible para retiro en local"
+                .equals(nombreTarea)) {
+            pedidoService.marcarListoRetiro(idPedido);
+        }
+
+        if ("Confirmar entrega del pedido".equals(nombreTarea)) {
+            despachoService.registrarEntrega(idPedido);
+        }
+
         flowableService.completarTarea(
                 idPedido,
                 nombreTarea,
@@ -471,11 +488,14 @@ public class AdminController {
         String rutPersonaRetira =
                 request.get("rutPersonaRetira");
 
+        pedidoService.registrarDatosRetiro(
+                idPedido,
+                nombrePersonaRetira,
+                rutPersonaRetira);
+
         Pedido pedido =
-                pedidoService.registrarDatosRetiro(
-                        idPedido,
-                        nombrePersonaRetira,
-                        rutPersonaRetira);
+                pedidoService.registrarRetiro(
+                        idPedido);
 
         flowableService.completarTarea(
                 idPedido,
@@ -517,8 +537,12 @@ public class AdminController {
             return respuestaNoAutorizada();
         }
 
+        despachoService.registrarDatosEnvio(
+                idPedido,
+                request);
+
         Despacho despacho =
-                despachoService.registrarDatosEnvio(
+                despachoService.registrarEnvio(
                         idPedido,
                         request);
 

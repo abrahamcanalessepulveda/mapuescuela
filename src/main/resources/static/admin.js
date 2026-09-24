@@ -1,4 +1,4 @@
-const API_ADMIN = "/api/admin";
+﻿const API_ADMIN = "/api/admin";
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("formLogin")
@@ -58,7 +58,7 @@ async function iniciarSesion(evento) {
     }
 
     try {
-        const respuesta = await fetch(`${API_ADMIN}/login`, {
+        const respuesta = await fetchSeguro(`${API_ADMIN}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -92,7 +92,7 @@ async function iniciarSesion(evento) {
 
 async function cerrarSesion() {
     try {
-        await fetch(`${API_ADMIN}/logout`, {
+        await fetchSeguro(`${API_ADMIN}/logout`, {
             method: "POST"
         });
 
@@ -747,7 +747,7 @@ async function registrarRetiroDesdePanel(
 
     try {
         const respuesta =
-            await fetch(
+            await fetchSeguro(
                 `${API_ADMIN}/pedidos/${idPedido}/registrar-retiro`,
                 {
                     method: "POST",
@@ -861,7 +861,7 @@ async function registrarDespachoDesdePanel(
 
     try {
         const respuesta =
-            await fetch(
+            await fetchSeguro(
                 `${API_ADMIN}/pedidos/${idPedido}/registrar-despacho`,
                 {
                     method: "POST",
@@ -988,7 +988,7 @@ async function completarAccion(
 
     try {
         const respuesta =
-            await fetch(
+            await fetchSeguro(
                 `${API_ADMIN}/pedidos/${idPedido}/completar`,
                 {
                     method: "POST",
