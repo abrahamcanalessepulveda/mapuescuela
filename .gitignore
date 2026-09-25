@@ -42,3 +42,12 @@ build/
 
 ### VS Code ###
 .vscode/
+### Respaldos locales ###
+*.bak
+database/mapuescuela_actual_*.sql
+*.backup
+*.respaldo
+*.mv.db
+engine-db-trace-actual.txt
+bpmn/Proceso_de_venta_-_Mapuescuela_U3_v8.bpmn20.xml
+src/main/resources/static/admin-con-filtro.js
