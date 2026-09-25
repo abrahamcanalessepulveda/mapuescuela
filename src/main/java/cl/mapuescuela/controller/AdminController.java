@@ -97,6 +97,8 @@ public class AdminController {
 
             httpRequest.changeSessionId();
 
+            session.removeAttribute("CLIENTE_ID");
+
             session.setAttribute(
                     "ADMIN_AUTENTICADO",
                     true);
