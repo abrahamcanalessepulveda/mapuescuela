@@ -131,6 +131,8 @@ footer {
     padding: 20px;
     color: #666666;
 }
+
+
 /* =========================================================
    PORTAL DE CLIENTES - ESTILO VERDE
    ========================================================= */
@@ -139,7 +141,11 @@ footer {
     background-color: #f3f8f4;
 }
 
+
+/* ENCABEZADO */
+
 .portal-clientes header {
+    position: relative;
     background-color: #176b3a;
     color: #ffffff;
     border-bottom: none;
@@ -149,20 +155,37 @@ footer {
 
 .portal-clientes header h1 {
     color: #ffffff;
+    margin-bottom: 4px;
 }
 
 .portal-clientes header p {
     color: #d9f0e1;
     font-size: 17px;
-    margin-bottom: 18px;
+    margin: 6px 0 0;
 }
 
-.portal-clientes header button {
-    background-color: #ffffff;
-    color: #176b3a;
-    font-weight: bold;
-    padding: 10px 18px;
+
+/* BOTÓN DE ACCESO ADMINISTRATIVO */
+
+.portal-clientes header .btn-panel-admin {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    width: auto;
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: normal;
+    padding: 8px 14px;
 }
+
+.portal-clientes header .btn-panel-admin:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+
+/* CONTENIDO PRINCIPAL */
 
 .portal-clientes main {
     max-width: 1100px;
@@ -184,6 +207,46 @@ footer {
     color: #245c38;
 }
 
+
+/* =========================================================
+   ACCESO DE CLIENTES
+   ========================================================= */
+
+.portal-clientes .seccion-acceso {
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.portal-clientes .acceso-clientes {
+    margin-top: 15px;
+}
+
+.portal-clientes .login-cliente {
+    padding: 5px 0 10px;
+}
+
+.portal-clientes .login-cliente h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.portal-clientes .texto-acceso {
+    color: #5c6f62;
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+
+/* FORMULARIOS */
+
+.portal-clientes input,
+.portal-clientes select {
+    width: 100%;
+    background-color: #ffffff;
+}
+
 .portal-clientes input:focus,
 .portal-clientes select:focus {
     outline: none;
@@ -202,6 +265,52 @@ footer {
     opacity: 1;
 }
 
+.portal-clientes .login-cliente form button {
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   REGISTRO PLEGABLE
+   ========================================================= */
+
+.portal-clientes .registro-cliente {
+    margin-top: 22px;
+    border-top: 1px solid #dbe9df;
+    padding-top: 18px;
+}
+
+.portal-clientes .registro-cliente summary {
+    cursor: pointer;
+    color: #176b3a;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    list-style-position: inside;
+}
+
+.portal-clientes .registro-cliente summary:hover {
+    background-color: #eef6f0;
+}
+
+.portal-clientes .registro-cliente[open] summary {
+    margin-bottom: 20px;
+}
+
+.portal-clientes .contenido-registro {
+    padding-top: 5px;
+}
+
+.portal-clientes .contenido-registro h3 {
+    margin-top: 0;
+}
+
+
+/* =========================================================
+   CATÁLOGO Y PEDIDOS
+   ========================================================= */
+
 .portal-clientes .producto-card {
     background-color: #fbfdfb;
     border-color: #d4e5d9;
@@ -212,8 +321,41 @@ footer {
     color: #245c38;
 }
 
+
+/* PIE DE PÁGINA */
+
 .portal-clientes footer {
     background-color: #e3f0e7;
     color: #41634c;
     border-top: 1px solid #d1e4d7;
+}
+
+
+/* =========================================================
+   ADAPTACIÓN PARA PANTALLAS PEQUEÑAS
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .portal-clientes header {
+        padding: 24px 15px;
+    }
+
+    .portal-clientes header .btn-panel-admin {
+        position: static;
+        margin-top: 15px;
+    }
+
+    .portal-clientes main {
+        width: 94%;
+        margin-top: 20px;
+    }
+
+    .portal-clientes section {
+        padding: 20px;
+    }
+
+    .portal-clientes .seccion-acceso {
+        max-width: 100%;
+    }
 }

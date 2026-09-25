@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapuescuela - Gestión de ventas</title>
+    <title>Mapuescuela - Portal de Clientes</title>
 
     <link rel="stylesheet" href="estilos.css">
 </head>
@@ -16,6 +16,7 @@
 
         <button
             type="button"
+            class="btn-panel-admin"
             onclick="window.location.href='admin.html'">
             Panel administrativo
         </button>
@@ -23,131 +24,175 @@
 
     <main>
 
-        <section>
+        <section class="seccion-acceso">
             <h2>Acceso de clientes</h2>
 
             <div id="estadoSesion">
                 <p>Comprobando sesión...</p>
             </div>
 
-            <div id="formulariosAcceso">
+            <div id="formulariosAcceso" class="acceso-clientes">
 
-                <h3>Iniciar sesión</h3>
+                <div class="login-cliente">
 
-                <form id="formLogin">
+                    <h3>Iniciar sesión</h3>
 
-                    <label for="emailLogin">
-                        Correo electrónico
-                    </label>
-                    <input
-                        type="email"
-                        id="emailLogin"
-                        autocomplete="email"
-                        required
-                    >
+                    <p class="texto-acceso">
+                        Ingresa a tu cuenta para realizar compras
+                        y consultar tus pedidos.
+                    </p>
 
-                    <label for="passwordLogin">
-                        Contraseña
-                    </label>
-                    <input
-                        type="password"
-                        id="passwordLogin"
-                        autocomplete="current-password"
-                        required
-                    >
+                    <form id="formLogin">
 
-                    <button type="submit">
-                        Iniciar sesión
-                    </button>
+                        <label for="emailLogin">
+                            Correo electrónico
+                        </label>
 
-                </form>
+                        <input
+                            type="email"
+                            id="emailLogin"
+                            autocomplete="email"
+                            required
+                        >
 
-                <div id="resultadoLogin" role="status"></div>
+                        <label for="passwordLogin">
+                            Contraseña
+                        </label>
 
-                <h3>Registrar nuevo cliente</h3>
+                        <input
+                            type="password"
+                            id="passwordLogin"
+                            autocomplete="current-password"
+                            required
+                        >
 
-                <form id="formRegistro">
+                        <button type="submit">
+                            Iniciar sesión
+                        </button>
 
-                    <label for="rutRegistro">RUT</label>
-                    <input
-                        type="text"
-                        id="rutRegistro"
-                        maxlength="20"
-                        required
-                    >
+                    </form>
 
-                    <label for="razonSocialRegistro">
-                        Razón social o nombre
-                    </label>
-                    <input
-                        type="text"
-                        id="razonSocialRegistro"
-                        required
-                    >
+                    <div id="resultadoLogin" role="status"></div>
 
-                    <label for="nombreContactoRegistro">
-                        Nombre de contacto
-                    </label>
-                    <input
-                        type="text"
-                        id="nombreContactoRegistro"
-                        required
-                    >
+                </div>
 
-                    <label for="emailRegistro">
-                        Correo electrónico
-                    </label>
-                    <input
-                        type="email"
-                        id="emailRegistro"
-                        autocomplete="email"
-                        required
-                    >
+                <details class="registro-cliente">
 
-                    <label for="telefonoRegistro">
-                        Teléfono
-                    </label>
-                    <input
-                        type="tel"
-                        id="telefonoRegistro"
-                        required
-                    >
+                    <summary>
+                        ¿No tienes cuenta? Crear cuenta
+                    </summary>
 
-                    <label for="direccionRegistro">
-                        Dirección
-                    </label>
-                    <input
-                        type="text"
-                        id="direccionRegistro"
-                        required
-                    >
+                    <div class="contenido-registro">
 
-                    <label for="passwordRegistro">
-                        Contraseña
-                    </label>
-                    <input
-                        type="password"
-                        id="passwordRegistro"
-                        minlength="8"
-                        maxlength="72"
-                        autocomplete="new-password"
-                        required
-                    >
+                        <h3>Registrar nuevo cliente</h3>
 
-                    <button type="submit">
-                        Registrar cliente
-                    </button>
+                        <p class="texto-acceso">
+                            Completa tus datos para crear una cuenta
+                            en Mapuescuela.
+                        </p>
 
-                </form>
+                        <form id="formRegistro">
 
-                <div id="resultadoRegistro" role="status"></div>
+                            <label for="rutRegistro">
+                                RUT
+                            </label>
+
+                            <input
+                                type="text"
+                                id="rutRegistro"
+                                maxlength="20"
+                                required
+                            >
+
+                            <label for="razonSocialRegistro">
+                                Razón social o nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                id="razonSocialRegistro"
+                                required
+                            >
+
+                            <label for="nombreContactoRegistro">
+                                Nombre de contacto
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nombreContactoRegistro"
+                                required
+                            >
+
+                            <label for="emailRegistro">
+                                Correo electrónico
+                            </label>
+
+                            <input
+                                type="email"
+                                id="emailRegistro"
+                                autocomplete="email"
+                                required
+                            >
+
+                            <label for="telefonoRegistro">
+                                Teléfono
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="telefonoRegistro"
+                                required
+                            >
+
+                            <label for="direccionRegistro">
+                                Dirección
+                            </label>
+
+                            <input
+                                type="text"
+                                id="direccionRegistro"
+                                required
+                            >
+
+                            <label for="passwordRegistro">
+                                Contraseña
+                            </label>
+
+                            <input
+                                type="password"
+                                id="passwordRegistro"
+                                minlength="8"
+                                maxlength="72"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button type="submit">
+                                Registrar cliente
+                            </button>
+
+                        </form>
+
+                        <div
+                            id="resultadoRegistro"
+                            role="status">
+                        </div>
+
+                    </div>
+
+                </details>
 
             </div>
 
             <div id="accionesSesion" hidden>
-                <button type="button" id="btnCerrarSesion">
+
+                <button
+                    type="button"
+                    id="btnCerrarSesion">
                     Cerrar sesión
                 </button>
+
             </div>
 
         </section>
@@ -161,6 +206,7 @@
         </section>
 
         <section id="seccionPedido" hidden>
+
             <h2>Generar pedido</h2>
 
             <p>
@@ -170,12 +216,20 @@
 
             <form id="formPedido">
 
-                <label for="producto">Producto</label>
+                <label for="producto">
+                    Producto
+                </label>
+
                 <select id="producto" required>
-                    <option value="">Seleccione un producto</option>
+                    <option value="">
+                        Seleccione un producto
+                    </option>
                 </select>
 
-                <label for="cantidad">Cantidad</label>
+                <label for="cantidad">
+                    Cantidad
+                </label>
+
                 <input
                     type="number"
                     id="cantidad"
@@ -184,10 +238,20 @@
                     required
                 >
 
-                <label for="modalidad">Modalidad de entrega</label>
+                <label for="modalidad">
+                    Modalidad de entrega
+                </label>
+
                 <select id="modalidad" required>
-                    <option value="RETIRO">Retiro en local</option>
-                    <option value="DESPACHO">Despacho a domicilio</option>
+
+                    <option value="RETIRO">
+                        Retiro en local
+                    </option>
+
+                    <option value="DESPACHO">
+                        Despacho a domicilio
+                    </option>
+
                 </select>
 
                 <button type="submit">
@@ -196,22 +260,31 @@
 
             </form>
 
-            <div id="resultadoPedido" role="status"></div>
+            <div
+                id="resultadoPedido"
+                role="status">
+            </div>
+
         </section>
 
         <section id="seccionPedidos" hidden>
+
             <h2>Mis pedidos</h2>
 
-            <button type="button" id="btnActualizarPedidos">
+            <button
+                type="button"
+                id="btnActualizarPedidos">
                 Actualizar mis pedidos
             </button>
 
             <div id="pedidos">
                 <p>Cargando pedidos...</p>
             </div>
+
         </section>
 
         <section id="seccionComprobante" hidden>
+
             <h2>Adjuntar comprobante de pago</h2>
 
             <form id="formComprobante">
@@ -243,13 +316,19 @@
 
             </form>
 
-            <div id="resultadoComprobante" role="status"></div>
+            <div
+                id="resultadoComprobante"
+                role="status">
+            </div>
+
         </section>
 
     </main>
 
     <footer>
-        <p>Mapuescuela - Proyecto Integración de Plataformas</p>
+        <p>
+            Mapuescuela - Proyecto Integración de Plataformas
+        </p>
     </footer>
 
     <script src="seguridad.js"></script>
