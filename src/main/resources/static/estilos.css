@@ -2,48 +2,385 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f4f4;
-    color: #222222;
+    background-color: #f7faf8;
+    color: #20332a;
 }
 
-header {
-    background-color: #ffffff;
-    padding: 25px 20px;
-    text-align: center;
-    border-bottom: 1px solid #dddddd;
+button,
+input,
+select {
+    font-family: inherit;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 32px;
-}
 
-header p {
-    margin-top: 8px;
-    color: #666666;
-}
+/* =========================================================
+   BARRA SUPERIOR
+   ========================================================= */
 
-main {
-    width: 90%;
-    max-width: 1100px;
-    margin: 30px auto;
-}
+.barra-superior {
+    width: 100%;
+    min-height: 82px;
+    padding: 0 5%;
+    background: linear-gradient(135deg, #176b3a, #197843);
+    color: #ffffff;
 
-section {
-    background-color: #ffffff;
-    margin-bottom: 25px;
-    padding: 25px;
-    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-section h2 {
+.marca-mapuescuela {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.logo-mapuescuela {
+    width: 54px;
+    height: 54px;
+
+    object-fit: cover;
+
+    background-color: #ffffff;
+
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.barra-superior .btn-panel-admin {
+    width: auto;
+    padding: 11px 18px;
+
+    background-color: transparent;
+    color: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 7px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.barra-superior .btn-panel-admin:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.portal-clientes main {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+
+/* =========================================================
+   PORTADA / HERO
+   ========================================================= */
+
+.portada-mapuescuela {
+    position: relative;
+    overflow: hidden;
+
+    min-height: 300px;
+    margin: 0;
+    padding: 65px 20px 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            ellipse at -5% 105%,
+            rgba(154, 225, 167, 0.33) 0%,
+            rgba(154, 225, 167, 0.33) 25%,
+            transparent 26%
+        ),
+        radial-gradient(
+            ellipse at 105% 100%,
+            rgba(169, 228, 179, 0.27) 0%,
+            rgba(169, 228, 179, 0.27) 28%,
+            transparent 29%
+        ),
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #fbfefc 58%,
+            #f0faf3 100%
+        );
+
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.portada-mapuescuela::after {
+    content: "";
+    position: absolute;
+
+    left: -5%;
+    bottom: -75px;
+
+    width: 110%;
+    height: 130px;
+
+    background-color: rgba(205, 240, 211, 0.45);
+
+    border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+
+    transform: rotate(-1deg);
+}
+
+.portada-contenido {
+    position: relative;
+    z-index: 2;
+}
+
+.portada-contenido h1 {
+    margin: 0;
+
+    color: #064e2c;
+    font-size: 58px;
+    line-height: 1.05;
+    font-weight: 800;
+}
+
+.portada-contenido h2 {
+    margin: 20px 0 8px;
+
+    padding: 0;
+    border: none;
+
+    color: #176b3a;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.portada-contenido p {
+    margin: 0 auto;
+
+    max-width: 760px;
+
+    color: #5d6970;
+    font-size: 19px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   TRES ACCESOS PRINCIPALES
+   ========================================================= */
+
+.accesos-principales {
+    position: relative;
+    z-index: 3;
+
+    width: 90%;
+    max-width: 1200px;
+
+    margin: -18px auto 50px;
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.tarjeta-acceso {
+    min-height: 340px;
+    padding: 30px 28px 26px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    background-color: rgba(255, 255, 255, 0.96);
+
+    border: 1px solid #cfe8d6;
+    border-radius: 12px;
+
+    box-shadow: 0 8px 22px rgba(28, 108, 61, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.tarjeta-acceso:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(28, 108, 61, 0.13);
+}
+
+.icono-acceso {
+    width: 92px;
+    height: 92px;
+
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #e5f5e9;
+
+    border-radius: 50%;
+
+    color: #176b3a;
+    font-size: 42px;
+}
+
+.tarjeta-acceso h2 {
+    margin: 0 0 14px;
+    padding: 0;
+
+    color: #064e2c;
+
+    border: none;
+
+    font-size: 25px;
+}
+
+.tarjeta-acceso p {
+    margin: 0 auto 25px;
+
+    max-width: 270px;
+
+    color: #56636c;
+
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.tarjeta-acceso .btn-acceso {
+    width: 100%;
+    margin-top: auto;
+    padding: 15px 16px;
+
+    background: linear-gradient(135deg, #29914f, #339d58);
+
+    color: #ffffff;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.tarjeta-acceso .btn-acceso:hover {
+    transform: translateY(-1px);
+    background: #247f46;
+}
+
+
+/* =========================================================
+   SECCIONES FUNCIONALES
+   ========================================================= */
+
+.seccion-acceso,
+.seccion-contenido {
+    width: 90%;
+    max-width: 1100px;
+
+    margin: 28px auto;
+    padding: 26px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #d6e8db;
+    border-radius: 10px;
+
+    box-shadow: 0 3px 12px rgba(23, 107, 58, 0.07);
+}
+
+.seccion-acceso {
+    max-width: 620px;
+}
+
+.seccion-acceso h2,
+.seccion-contenido h2 {
     margin-top: 0;
     margin-bottom: 20px;
+
+    padding-bottom: 10px;
+
+    color: #176b3a;
+
+    border-bottom: 2px solid #e1eee5;
 }
+
+.seccion-acceso h3,
+.seccion-contenido h3 {
+    color: #245c38;
+}
+
+
+/* =========================================================
+   ACCESO Y LOGIN
+   ========================================================= */
+
+.acceso-clientes {
+    margin-top: 15px;
+}
+
+.login-cliente {
+    padding: 5px 0 10px;
+}
+
+.login-cliente h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.texto-acceso {
+    margin-top: 0;
+    margin-bottom: 20px;
+
+    color: #5c6f62;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
 
 form {
     display: flex;
@@ -52,221 +389,52 @@ form {
 }
 
 label {
-    font-weight: bold;
-}
-
-input,
-select,
-button {
-    padding: 10px;
-    font-size: 16px;
+    color: #25382d;
+    font-weight: 700;
 }
 
 input,
 select {
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-}
-
-button {
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-.producto-card {
-    border: 1px solid #dddddd;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 12px;
-}
-
-.producto-card h3 {
-    margin-top: 0;
-}
-
-.tabla-contenedor {
-    overflow-x: auto;
-}
-
-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
 
-th,
-td {
-    border: 1px solid #dddddd;
-    padding: 10px;
-    text-align: left;
-}
+    padding: 11px;
 
-th {
-    background-color: #f0f0f0;
-}
-
-.mensaje-exito {
-    margin-top: 15px;
-    padding: 12px;
-    border: 1px solid #9acb9a;
-    background-color: #eef9ee;
-    border-radius: 5px;
-}
-
-.mensaje-error {
-    margin-top: 15px;
-    padding: 12px;
-    border: 1px solid #d8a0a0;
-    background-color: #fff0f0;
-    border-radius: 5px;
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    color: #666666;
-}
-
-
-/* =========================================================
-   PORTAL DE CLIENTES - ESTILO VERDE
-   ========================================================= */
-
-.portal-clientes {
-    background-color: #f3f8f4;
-}
-
-
-/* ENCABEZADO */
-
-.portal-clientes header {
-    position: relative;
-    background-color: #176b3a;
-    color: #ffffff;
-    border-bottom: none;
-    padding: 28px 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-}
-
-.portal-clientes header h1 {
-    color: #ffffff;
-    margin-bottom: 4px;
-}
-
-.portal-clientes header p {
-    color: #d9f0e1;
-    font-size: 17px;
-    margin: 6px 0 0;
-}
-
-
-/* BOTÓN DE ACCESO ADMINISTRATIVO */
-
-.portal-clientes header .btn-panel-admin {
-    position: absolute;
-    top: 25px;
-    right: 30px;
-    width: auto;
-    background-color: transparent;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    font-weight: normal;
-    padding: 8px 14px;
-}
-
-.portal-clientes header .btn-panel-admin:hover {
-    background-color: rgba(255, 255, 255, 0.12);
-}
-
-
-/* CONTENIDO PRINCIPAL */
-
-.portal-clientes main {
-    max-width: 1100px;
-}
-
-.portal-clientes section {
-    border: 1px solid #dbe9df;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(23, 107, 58, 0.08);
-}
-
-.portal-clientes section h2 {
-    color: #176b3a;
-    border-bottom: 2px solid #e1eee5;
-    padding-bottom: 10px;
-}
-
-.portal-clientes section h3 {
-    color: #245c38;
-}
-
-
-/* =========================================================
-   ACCESO DE CLIENTES
-   ========================================================= */
-
-.portal-clientes .seccion-acceso {
-    max-width: 620px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.portal-clientes .acceso-clientes {
-    margin-top: 15px;
-}
-
-.portal-clientes .login-cliente {
-    padding: 5px 0 10px;
-}
-
-.portal-clientes .login-cliente h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-}
-
-.portal-clientes .texto-acceso {
-    color: #5c6f62;
-    line-height: 1.5;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-
-/* FORMULARIOS */
-
-.portal-clientes input,
-.portal-clientes select {
-    width: 100%;
     background-color: #ffffff;
+
+    border: 1px solid #c9d2cc;
+    border-radius: 5px;
+
+    font-size: 15px;
 }
 
-.portal-clientes input:focus,
-.portal-clientes select:focus {
+input:focus,
+select:focus {
     outline: none;
+
     border-color: #2e8b57;
+
     box-shadow: 0 0 0 2px rgba(46, 139, 87, 0.12);
 }
 
-.portal-clientes button {
+.seccion-acceso button,
+.seccion-contenido button {
+    padding: 11px 15px;
+
     background-color: #2e8b57;
     color: #ffffff;
-    font-weight: bold;
+
+    border: none;
+    border-radius: 5px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
 }
 
-.portal-clientes button:hover {
+.seccion-acceso button:hover,
+.seccion-contenido button:hover {
     background-color: #247548;
-    opacity: 1;
-}
-
-.portal-clientes .login-cliente form button {
-    margin-top: 5px;
 }
 
 
@@ -274,88 +442,249 @@ footer {
    REGISTRO PLEGABLE
    ========================================================= */
 
-.portal-clientes .registro-cliente {
+.registro-cliente {
     margin-top: 22px;
-    border-top: 1px solid #dbe9df;
     padding-top: 18px;
+
+    border-top: 1px solid #dbe9df;
 }
 
-.portal-clientes .registro-cliente summary {
-    cursor: pointer;
-    color: #176b3a;
-    font-weight: bold;
-    text-align: center;
+.registro-cliente summary {
     padding: 10px;
+
+    color: #176b3a;
+
     border-radius: 6px;
+
+    text-align: center;
+    font-weight: 700;
+
+    cursor: pointer;
+
     list-style-position: inside;
 }
 
-.portal-clientes .registro-cliente summary:hover {
+.registro-cliente summary:hover {
     background-color: #eef6f0;
 }
 
-.portal-clientes .registro-cliente[open] summary {
+.registro-cliente[open] summary {
     margin-bottom: 20px;
 }
 
-.portal-clientes .contenido-registro {
+.contenido-registro {
     padding-top: 5px;
 }
 
-.portal-clientes .contenido-registro h3 {
+.contenido-registro h3 {
     margin-top: 0;
 }
 
 
 /* =========================================================
-   CATÁLOGO Y PEDIDOS
+   CATÁLOGO
    ========================================================= */
 
-.portal-clientes .producto-card {
+.producto-card {
+    margin-bottom: 12px;
+    padding: 16px;
+
     background-color: #fbfdfb;
-    border-color: #d4e5d9;
+
+    border: 1px solid #d4e5d9;
+    border-radius: 7px;
 }
 
-.portal-clientes th {
+.producto-card h3 {
+    margin-top: 0;
+    color: #176b3a;
+}
+
+
+/* =========================================================
+   TABLAS
+   ========================================================= */
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    margin-top: 15px;
+
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+
+    border: 1px solid #d8e3db;
+
+    text-align: left;
+}
+
+th {
     background-color: #e5f2e9;
     color: #245c38;
 }
 
 
-/* PIE DE PÁGINA */
+/* =========================================================
+   MENSAJES
+   ========================================================= */
 
-.portal-clientes footer {
-    background-color: #e3f0e7;
-    color: #41634c;
-    border-top: 1px solid #d1e4d7;
+.mensaje-exito {
+    margin-top: 15px;
+    padding: 12px;
+
+    background-color: #eef9ee;
+
+    border: 1px solid #9acb9a;
+    border-radius: 5px;
+}
+
+.mensaje-error {
+    margin-top: 15px;
+    padding: 12px;
+
+    background-color: #fff0f0;
+
+    border: 1px solid #d8a0a0;
+    border-radius: 5px;
 }
 
 
 /* =========================================================
-   ADAPTACIÓN PARA PANTALLAS PEQUEÑAS
+   PIE DE PÁGINA
    ========================================================= */
 
-@media (max-width: 700px) {
+.portal-clientes footer {
+    margin-top: 55px;
+    padding: 30px 20px;
 
-    .portal-clientes header {
-        padding: 24px 15px;
+    background:
+        linear-gradient(
+            90deg,
+            #dff3e4,
+            #eef9f0,
+            #dff3e4
+        );
+
+    color: #50645a;
+
+    border-top: 1px solid #d1e4d7;
+
+    text-align: center;
+}
+
+.portal-clientes footer p {
+    margin: 0;
+}
+
+
+/* =========================================================
+   ELEMENTOS OCULTOS
+   ========================================================= */
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .barra-superior {
+        padding: 15px 4%;
     }
 
-    .portal-clientes header .btn-panel-admin {
-        position: static;
-        margin-top: 15px;
+    .marca-mapuescuela {
+        font-size: 23px;
     }
 
-    .portal-clientes main {
-        width: 94%;
-        margin-top: 20px;
+    .icono-marca {
+        width: 40px;
+        height: 40px;
+        font-size: 34px;
     }
 
-    .portal-clientes section {
+    .portada-mapuescuela {
+        min-height: 260px;
+        padding: 55px 20px 70px;
+    }
+
+    .portada-contenido h1 {
+        font-size: 45px;
+    }
+
+    .portada-contenido h2 {
+        font-size: 26px;
+    }
+
+    .portada-contenido p {
+        font-size: 17px;
+    }
+
+    .accesos-principales {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+    }
+
+    .tarjeta-acceso {
+        min-height: auto;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .barra-superior {
+        flex-direction: column;
+        gap: 12px;
+
+        padding: 18px 15px;
+    }
+
+    .barra-superior .btn-panel-admin {
+        width: auto;
+    }
+
+    .portada-mapuescuela {
+        min-height: 240px;
+        padding: 45px 18px 65px;
+    }
+
+    .portada-contenido h1 {
+        font-size: 38px;
+    }
+
+    .portada-contenido h2 {
+        margin-top: 14px;
+        font-size: 23px;
+    }
+
+    .portada-contenido p {
+        font-size: 16px;
+    }
+
+    .accesos-principales {
+        width: 92%;
+        gap: 18px;
+    }
+
+    .tarjeta-acceso {
+        padding: 25px 22px;
+    }
+
+    .seccion-acceso,
+    .seccion-contenido {
+        width: 92%;
         padding: 20px;
-    }
-
-    .portal-clientes .seccion-acceso {
-        max-width: 100%;
     }
 }

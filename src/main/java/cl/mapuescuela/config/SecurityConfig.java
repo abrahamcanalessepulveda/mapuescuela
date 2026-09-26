@@ -1,4 +1,3 @@
-
 package cl.mapuescuela.config;
 
 import org.springframework.context.annotation.Bean;
@@ -29,7 +28,7 @@ public class SecurityConfig {
                     "/api/productos/*"
                 ).permitAll()
 
-                // Archivos de la interfaz.
+                // Archivos y recursos públicos de la interfaz.
                 .requestMatchers(
                     "/",
                     "/index.html",
@@ -40,7 +39,8 @@ public class SecurityConfig {
                     "/clientes.js",
                     "/seguridad.js",
                     "/estilos.css",
-                    "/favicon.ico"
+                    "/favicon.ico",
+                    "/img/**"
                 ).permitAll()
 
                 // Token CSRF y rutas de autenticación.

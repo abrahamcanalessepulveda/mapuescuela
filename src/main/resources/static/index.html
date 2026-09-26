@@ -1,46 +1,269 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Mapuescuela - Portal de Clientes</title>
 
     <link rel="stylesheet" href="estilos.css">
+
+    <style>
+        /* =====================================================
+           BARRA DE ACCIONES DE MIS PEDIDOS
+           ===================================================== */
+
+        .barra-mis-pedidos {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+
+            margin: 12px 0 10px;
+            padding: 10px 12px;
+
+            background-color: #16733f;
+            border-radius: 7px;
+        }
+
+        .barra-mis-pedidos-usuario {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+
+            margin-left: auto;
+        }
+
+        .nombre-cliente-pedidos {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .btn-cerrar-sesion-pedidos {
+            width: auto;
+
+            padding: 9px 14px;
+
+            background-color: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            border-radius: 6px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .btn-cerrar-sesion-pedidos:hover {
+            background-color: rgba(255, 255, 255, 0.24);
+        }
+
+        @media (max-width: 650px) {
+
+            .barra-mis-pedidos {
+                align-items: stretch;
+            }
+
+            .barra-mis-pedidos-usuario {
+                width: 100%;
+                justify-content: space-between;
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 
 <body class="portal-clientes">
 
-    <header>
-        <h1>Mapuescuela</h1>
-        <p>Portal de Clientes</p>
+    <!-- =====================================================
+         BARRA SUPERIOR
+         ===================================================== -->
+
+    <header class="barra-superior">
+
+        <div class="marca-mapuescuela">
+
+            <img
+                src="img/logo-mapuescuela.jpg"
+                alt="Logo Mapuescuela"
+                class="logo-mapuescuela"
+            >
+
+            <span>
+                Mapuescuela
+            </span>
+
+        </div>
+
 
         <button
             type="button"
             class="btn-panel-admin"
             onclick="window.location.href='admin.html'">
-            Panel administrativo
+            ⚙ Panel administrativo
         </button>
+
     </header>
+
+
+    <!-- =====================================================
+         PORTADA
+         ===================================================== -->
 
     <main>
 
-        <section class="seccion-acceso">
-            <h2>Acceso de clientes</h2>
+        <section class="portada-mapuescuela">
 
-            <div id="estadoSesion">
-                <p>Comprobando sesión...</p>
+            <div class="portada-contenido">
+
+                <h1>
+                    Mapuescuela
+                </h1>
+
+                <h2>
+                    Portal de Clientes
+                </h2>
+
+                <p>
+                    Realiza tus pedidos de forma rápida y sencilla
+                    a través de Mapuescuela.
+                </p>
+
             </div>
 
-            <div id="formulariosAcceso" class="acceso-clientes">
+        </section>
+
+
+        <!-- =================================================
+             ACCESOS PRINCIPALES
+             ================================================= -->
+
+        <section class="accesos-principales">
+
+            <article class="tarjeta-acceso">
+
+                <div class="icono-acceso">
+                    🛒
+                </div>
+
+                <h2>
+                    Realizar pedido
+                </h2>
+
+                <p>
+                    Selecciona los productos que necesitas
+                    y envía tu pedido.
+                </p>
+
+                <button
+                    type="button"
+                    id="btnIrPedidos"
+                    class="btn-acceso">
+                    🛒 &nbsp; Ir a pedidos &nbsp; →
+                </button>
+
+            </article>
+
+
+            <article class="tarjeta-acceso">
+
+                <div class="icono-acceso">
+                    ◇
+                </div>
+
+                <h2>
+                    Ver productos
+                </h2>
+
+                <p>
+                    Revisa el catálogo de productos
+                    disponibles.
+                </p>
+
+                <button
+                    type="button"
+                    id="btnVerCatalogo"
+                    class="btn-acceso">
+                    ☷ &nbsp; Ver catálogo &nbsp; →
+                </button>
+
+            </article>
+
+
+            <article class="tarjeta-acceso">
+
+                <div class="icono-acceso">
+                    ▤
+                </div>
+
+                <h2>
+                    Mis pedidos
+                </h2>
+
+                <p>
+                    Consulta el estado de tus pedidos
+                    y su historial.
+                </p>
+
+                <button
+                    type="button"
+                    id="btnVerMisPedidos"
+                    class="btn-acceso">
+                    ▣ &nbsp; Ver mis pedidos &nbsp; →
+                </button>
+
+            </article>
+
+        </section>
+
+
+        <!-- =================================================
+             ACCESO DE CLIENTES
+             ================================================= -->
+
+        <section
+            id="seccionAcceso"
+            class="seccion-acceso"
+            hidden>
+
+            <h2>
+                Acceso de clientes
+            </h2>
+
+
+            <div id="estadoSesion">
+
+                <p>
+                    Comprobando sesión...
+                </p>
+
+            </div>
+
+
+            <div
+                id="formulariosAcceso"
+                class="acceso-clientes">
 
                 <div class="login-cliente">
 
-                    <h3>Iniciar sesión</h3>
+                    <h3>
+                        Iniciar sesión
+                    </h3>
 
                     <p class="texto-acceso">
                         Ingresa a tu cuenta para realizar compras
                         y consultar tus pedidos.
                     </p>
+
 
                     <form id="formLogin">
 
@@ -55,6 +278,7 @@
                             required
                         >
 
+
                         <label for="passwordLogin">
                             Contraseña
                         </label>
@@ -66,15 +290,23 @@
                             required
                         >
 
+
                         <button type="submit">
                             Iniciar sesión
                         </button>
 
                     </form>
 
-                    <div id="resultadoLogin" role="status"></div>
+
+                    <div
+                        id="resultadoLogin"
+                        role="status">
+                    </div>
 
                 </div>
+
+
+                <!-- REGISTRO DE CLIENTE -->
 
                 <details class="registro-cliente">
 
@@ -82,14 +314,18 @@
                         ¿No tienes cuenta? Crear cuenta
                     </summary>
 
+
                     <div class="contenido-registro">
 
-                        <h3>Registrar nuevo cliente</h3>
+                        <h3>
+                            Registrar nuevo cliente
+                        </h3>
 
                         <p class="texto-acceso">
                             Completa tus datos para crear una cuenta
                             en Mapuescuela.
                         </p>
+
 
                         <form id="formRegistro">
 
@@ -104,6 +340,7 @@
                                 required
                             >
 
+
                             <label for="razonSocialRegistro">
                                 Razón social o nombre
                             </label>
@@ -114,6 +351,7 @@
                                 required
                             >
 
+
                             <label for="nombreContactoRegistro">
                                 Nombre de contacto
                             </label>
@@ -123,6 +361,7 @@
                                 id="nombreContactoRegistro"
                                 required
                             >
+
 
                             <label for="emailRegistro">
                                 Correo electrónico
@@ -135,6 +374,7 @@
                                 required
                             >
 
+
                             <label for="telefonoRegistro">
                                 Teléfono
                             </label>
@@ -145,6 +385,7 @@
                                 required
                             >
 
+
                             <label for="direccionRegistro">
                                 Dirección
                             </label>
@@ -154,6 +395,7 @@
                                 id="direccionRegistro"
                                 required
                             >
+
 
                             <label for="passwordRegistro">
                                 Contraseña
@@ -168,11 +410,13 @@
                                 required
                             >
 
+
                             <button type="submit">
                                 Registrar cliente
                             </button>
 
                         </form>
+
 
                         <div
                             id="resultadoRegistro"
@@ -185,34 +429,80 @@
 
             </div>
 
-            <div id="accionesSesion" hidden>
 
-                <button
-                    type="button"
-                    id="btnCerrarSesion">
-                    Cerrar sesión
-                </button>
-
-            </div>
+            <button
+                type="button"
+                class="btn-volver-inicio"
+                onclick="
+                    document.getElementById('seccionAcceso').hidden = true;
+                    document.querySelector('.portada-mapuescuela').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                ">
+                ← Volver al inicio
+            </button>
 
         </section>
 
-        <section>
-            <h2>Catálogo de productos</h2>
+
+        <!-- =================================================
+             CATÁLOGO
+             ================================================= -->
+
+        <section
+            id="seccionCatalogo"
+            class="seccion-contenido"
+            hidden>
+
+            <h2>
+                Catálogo de productos
+            </h2>
+
 
             <div id="productos">
-                <p>Cargando productos...</p>
+
+                <p>
+                    Cargando productos...
+                </p>
+
             </div>
+
+
+            <button
+                type="button"
+                class="btn-volver-inicio"
+                onclick="
+                    document.getElementById('seccionCatalogo').hidden = true;
+                    document.querySelector('.portada-mapuescuela').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                ">
+                ← Volver al inicio
+            </button>
+
         </section>
 
-        <section id="seccionPedido" hidden>
 
-            <h2>Generar pedido</h2>
+        <!-- =================================================
+             GENERAR PEDIDO
+             ================================================= -->
+
+        <section
+            id="seccionPedido"
+            class="seccion-contenido"
+            hidden>
+
+            <h2>
+                Generar pedido
+            </h2>
 
             <p>
                 El pedido se asociará automáticamente
                 a la cuenta con la que iniciaste sesión.
             </p>
+
 
             <form id="formPedido">
 
@@ -220,11 +510,16 @@
                     Producto
                 </label>
 
-                <select id="producto" required>
+                <select
+                    id="producto"
+                    required>
+
                     <option value="">
                         Seleccione un producto
                     </option>
+
                 </select>
+
 
                 <label for="cantidad">
                     Cantidad
@@ -238,11 +533,14 @@
                     required
                 >
 
+
                 <label for="modalidad">
                     Modalidad de entrega
                 </label>
 
-                <select id="modalidad" required>
+                <select
+                    id="modalidad"
+                    required>
 
                     <option value="RETIRO">
                         Retiro en local
@@ -254,38 +552,121 @@
 
                 </select>
 
+
                 <button type="submit">
                     Generar pedido
                 </button>
 
             </form>
 
+
             <div
                 id="resultadoPedido"
                 role="status">
             </div>
 
-        </section>
-
-        <section id="seccionPedidos" hidden>
-
-            <h2>Mis pedidos</h2>
 
             <button
                 type="button"
-                id="btnActualizarPedidos">
-                Actualizar mis pedidos
+                class="btn-volver-inicio"
+                onclick="
+                    document.getElementById('seccionPedido').hidden = true;
+                    document.querySelector('.portada-mapuescuela').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                ">
+                ← Volver al inicio
             </button>
-
-            <div id="pedidos">
-                <p>Cargando pedidos...</p>
-            </div>
 
         </section>
 
-        <section id="seccionComprobante" hidden>
 
-            <h2>Adjuntar comprobante de pago</h2>
+        <!-- =================================================
+             MIS PEDIDOS
+             ================================================= -->
+
+        <section
+            id="seccionPedidos"
+            class="seccion-contenido"
+            hidden>
+
+            <h2>
+                Mis pedidos
+            </h2>
+
+
+            <div class="barra-mis-pedidos">
+
+                <button
+                    type="button"
+                    id="btnActualizarPedidos">
+                    Actualizar mis pedidos
+                </button>
+
+
+                <div
+                    id="sesionPedidos"
+                    class="barra-mis-pedidos-usuario"
+                    hidden>
+
+                    <span
+                        id="nombreClientePedidos"
+                        class="nombre-cliente-pedidos">
+                        👤 Cliente: Cliente
+                    </span>
+
+
+                    <button
+                        type="button"
+                        id="btnCerrarSesion"
+                        class="btn-cerrar-sesion-pedidos">
+                        Cerrar sesión
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div id="pedidos">
+
+                <p>
+                    Cargando pedidos...
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="btn-volver-inicio"
+                onclick="
+                    document.getElementById('seccionPedidos').hidden = true;
+                    document.querySelector('.portada-mapuescuela').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                ">
+                ← Volver al inicio
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPROBANTE
+             ================================================= -->
+
+        <section
+            id="seccionComprobante"
+            class="seccion-contenido"
+            hidden>
+
+            <h2>
+                Adjuntar comprobante de pago
+            </h2>
+
 
             <form id="formComprobante">
 
@@ -300,6 +681,7 @@
                     required
                 >
 
+
                 <label for="archivoComprobante">
                     Archivo del comprobante
                 </label>
@@ -310,29 +692,54 @@
                     required
                 >
 
+
                 <button type="submit">
                     Subir comprobante
                 </button>
 
             </form>
 
+
             <div
                 id="resultadoComprobante"
                 role="status">
             </div>
 
+
+            <button
+                type="button"
+                class="btn-volver-inicio"
+                onclick="
+                    document.getElementById('seccionComprobante').hidden = true;
+                    document.querySelector('.portada-mapuescuela').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                ">
+                ← Volver al inicio
+            </button>
+
         </section>
 
     </main>
 
+
+    <!-- =====================================================
+         PIE DE PÁGINA
+         ===================================================== -->
+
     <footer>
+
         <p>
             Mapuescuela - Proyecto Integración de Plataformas
         </p>
+
     </footer>
+
 
     <script src="seguridad.js"></script>
     <script src="app.js"></script>
 
 </body>
+
 </html>

@@ -4,51 +4,679 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Mapuescuela - Administración</title>
+
     <link rel="stylesheet" href="estilos.css">
+
     <style>
-        /* Estilos exclusivos del panel administrativo. */
-        body.admin-page { background: #edf2f8; }
-        .admin-page > header { background: #183153; color: #fff; border-bottom: 4px solid #3b82f6; }
-        .admin-page > header p { color: #dbeafe; }
-        .admin-page > header button { background: #fff; color: #183153; font-weight: 700; }
-        .admin-page .admin-nav { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px; margin: 18px 0 22px; background: #183153; border-radius: 8px; }
-        .admin-page .admin-nav button { background: #e8eef7; color: #183153; font-weight: 700; border: 2px solid transparent; }
-        .admin-page .admin-nav button:hover { background: #fff; opacity: 1; }
-        .admin-page .admin-nav button.admin-nav-active { background: #3b82f6; color: #fff; border-color: #bfdbfe; }
-        .admin-page .admin-nav #btnCerrarSesion { margin-left: auto; background: #fee2e2; color: #991b1b; }
-        .admin-page .admin-filtros { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 14px 0; }
-        .admin-page .admin-filtros label { display: block; margin-bottom: 6px; }
-        .admin-page .admin-filtros select { min-width: 210px; }
-        .admin-page .admin-filtros button { background: #183153; color: #fff; }
-        .admin-page #listadoPedidos button { background: #e0ecff; color: #183153; font-weight: 700; }
-        .admin-page #listadoPedidos tr:hover td { background: #f2f7ff; }
-        @media (max-width: 600px) { .admin-page .admin-nav #btnCerrarSesion { margin-left: 0; } }
+        /* =====================================================
+           ESTILOS EXCLUSIVOS DEL PANEL ADMINISTRATIVO
+           ===================================================== */
+
+        body.admin-page {
+            min-height: 100vh;
+            margin: 0;
+            background-color: #edf2f8;
+            color: #1f2937;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .admin-page * {
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           ENCABEZADO
+           ===================================================== */
+
+        .admin-page > header {
+            width: 100%;
+            padding: 24px 5%;
+
+            background: #183153;
+            color: #ffffff;
+
+            border-bottom: 4px solid #3b82f6;
+        }
+
+        .admin-page > header h1 {
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .admin-page > header p {
+            margin: 0 0 16px;
+
+            color: #dbeafe;
+
+            font-size: 16px;
+        }
+
+        .admin-page > header button {
+            width: auto;
+
+            padding: 10px 16px;
+
+            background: #ffffff;
+            color: #183153;
+
+            border: none;
+            border-radius: 6px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .admin-page > header button:hover {
+            background: #e8eef7;
+        }
+
+
+        /* =====================================================
+           CONTENIDO PRINCIPAL
+           ===================================================== */
+
+        .admin-page main {
+            width: 90%;
+            max-width: 1200px;
+
+            margin: 32px auto 50px;
+        }
+
+
+        /* =====================================================
+           LOGIN ADMINISTRATIVO
+           ===================================================== */
+
+        .admin-page #seccionLogin {
+            width: 100%;
+            max-width: 560px;
+
+            margin: 40px auto;
+            padding: 30px;
+
+            background: #ffffff;
+
+            border: 1px solid #d7e0eb;
+            border-radius: 10px;
+
+            box-shadow:
+                0 6px 20px rgba(24, 49, 83, 0.10);
+        }
+
+        .admin-page #seccionLogin h2 {
+            margin: 0 0 12px;
+
+            color: #183153;
+
+            font-size: 26px;
+        }
+
+        .admin-page #seccionLogin > p {
+            margin: 0 0 24px;
+
+            color: #5b6778;
+
+            line-height: 1.5;
+        }
+
+        .admin-page #formLogin {
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+
+            width: 100%;
+            max-width: none;
+        }
+
+        .admin-page #formLogin label {
+            color: #24364d;
+
+            font-weight: 700;
+        }
+
+        .admin-page #formLogin input {
+            width: 100%;
+
+            padding: 12px;
+
+            background: #ffffff;
+
+            border: 1px solid #bdc9d8;
+            border-radius: 6px;
+
+            color: #1f2937;
+
+            font-size: 15px;
+        }
+
+        .admin-page #formLogin input:focus {
+            outline: none;
+
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 3px rgba(59, 130, 246, 0.14);
+        }
+
+        .admin-page #formLogin button {
+            width: auto;
+
+            align-self: flex-start;
+
+            margin-top: 8px;
+            padding: 11px 22px;
+
+            background: #183153;
+            color: #ffffff;
+
+            border: none;
+            border-radius: 6px;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .admin-page #formLogin button:hover {
+            background: #24466f;
+        }
+
+
+        /* =====================================================
+           PANEL GENERAL
+           ===================================================== */
+
+        .admin-page #seccionAdministracion {
+            width: 100%;
+        }
+
+        .admin-page #seccionAdministracion > h2 {
+            margin-bottom: 8px;
+
+            color: #183153;
+
+            font-size: 28px;
+        }
+
+        .admin-page #seccionAdministracion > p {
+            color: #5b6778;
+        }
+
+
+        /* =====================================================
+           NAVEGACIÓN ADMINISTRATIVA
+           ===================================================== */
+
+        .admin-page .admin-nav {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 18px 0 24px;
+            padding: 14px;
+
+            background: #183153;
+
+            border-radius: 8px;
+        }
+
+        .admin-page .admin-nav button {
+            width: auto;
+
+            padding: 10px 18px;
+
+            background: #e8eef7;
+            color: #183153;
+
+            border: 2px solid transparent;
+            border-radius: 6px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .admin-page .admin-nav button:hover {
+            background: #ffffff;
+        }
+
+        .admin-page .admin-nav button.admin-nav-active {
+            background: #3b82f6;
+            color: #ffffff;
+
+            border-color: #bfdbfe;
+        }
+
+        .admin-page .admin-nav #btnCerrarSesion {
+            margin-left: auto;
+
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .admin-page .admin-nav #btnCerrarSesion:hover {
+            background: #fecaca;
+        }
+
+
+        /* =====================================================
+           PANELES
+           ===================================================== */
+
+        .admin-page #panelPedidos,
+        .admin-page #panelInventario,
+        .admin-page #panelClientes {
+            margin-top: 22px;
+            padding: 26px;
+
+            background: #ffffff;
+
+            border: 1px solid #d7e0eb;
+            border-radius: 10px;
+
+            box-shadow:
+                0 4px 16px rgba(24, 49, 83, 0.07);
+        }
+
+        .admin-page #panelPedidos h2,
+        .admin-page #panelInventario h2,
+        .admin-page #panelClientes h2 {
+            margin-top: 0;
+
+            color: #183153;
+        }
+
+        .admin-page #panelPedidos h3,
+        .admin-page #panelInventario h3,
+        .admin-page #panelClientes h3 {
+            margin-top: 28px;
+
+            color: #27496f;
+        }
+
+        .admin-page hr {
+            margin: 22px 0;
+
+            border: 0;
+            border-top: 1px solid #d7e0eb;
+        }
+
+
+        /* =====================================================
+           FORMULARIOS ADMINISTRATIVOS
+           ===================================================== */
+
+        .admin-page form {
+            width: 100%;
+            max-width: 620px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+        .admin-page form label {
+            color: #24364d;
+
+            font-weight: 700;
+        }
+
+        .admin-page input,
+        .admin-page select,
+        .admin-page textarea {
+            width: 100%;
+
+            padding: 11px;
+
+            background: #ffffff;
+
+            border: 1px solid #bdc9d8;
+            border-radius: 6px;
+
+            color: #1f2937;
+
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        .admin-page textarea {
+            resize: vertical;
+        }
+
+        .admin-page input:focus,
+        .admin-page select:focus,
+        .admin-page textarea:focus {
+            outline: none;
+
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+
+        /* =====================================================
+           BOTONES ADMINISTRATIVOS
+           ===================================================== */
+
+        .admin-page form button,
+        .admin-page #panelPedidos > button,
+        .admin-page #panelInventario > button,
+        .admin-page #panelClientes > button,
+        .admin-page #accionesPedido button {
+            width: auto;
+
+            align-self: flex-start;
+
+            padding: 10px 16px;
+
+            background: #183153;
+            color: #ffffff;
+
+            border: none;
+            border-radius: 6px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .admin-page form button:hover,
+        .admin-page #panelPedidos > button:hover,
+        .admin-page #panelInventario > button:hover,
+        .admin-page #panelClientes > button:hover,
+        .admin-page #accionesPedido button:hover {
+            background: #24466f;
+        }
+
+
+        /* =====================================================
+           FILTRO DE PEDIDOS
+           ===================================================== */
+
+        .admin-page .admin-filtros {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: end;
+
+            gap: 12px;
+
+            margin: 14px 0 18px;
+        }
+
+        .admin-page .admin-filtros > div {
+            min-width: 240px;
+        }
+
+        .admin-page .admin-filtros label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #24364d;
+
+            font-weight: 700;
+        }
+
+        .admin-page .admin-filtros select {
+            min-width: 240px;
+        }
+
+        .admin-page .admin-filtros button {
+            width: auto;
+
+            padding: 11px 16px;
+
+            background: #183153;
+            color: #ffffff;
+
+            border: none;
+            border-radius: 6px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .admin-page .admin-filtros button:hover {
+            background: #24466f;
+        }
+
+
+        /* =====================================================
+           TABLAS
+           ===================================================== */
+
+        .admin-page .tabla-contenedor {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        .admin-page table {
+            width: 100%;
+
+            margin-top: 15px;
+
+            background: #ffffff;
+
+            border-collapse: collapse;
+        }
+
+        .admin-page th,
+        .admin-page td {
+            padding: 11px 12px;
+
+            border: 1px solid #d8e1ec;
+
+            text-align: left;
+        }
+
+        .admin-page th {
+            background: #e8eef7;
+            color: #183153;
+        }
+
+        .admin-page tbody tr:hover td {
+            background: #f5f8fc;
+        }
+
+        .admin-page #listadoPedidos button {
+            width: auto;
+
+            padding: 7px 11px;
+
+            background: #e0ecff;
+            color: #183153;
+
+            border: 1px solid #b8d0f5;
+            border-radius: 5px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .admin-page #listadoPedidos button:hover {
+            background: #cfe0fa;
+        }
+
+
+        /* =====================================================
+           FORMULARIOS INTERNOS
+           ===================================================== */
+
+        .admin-page #panelFormularioProducto,
+        .admin-page #panelFormularioCliente,
+        .admin-page #accionesPedido {
+            margin-top: 24px;
+            padding: 22px;
+
+            background: #f8fafc;
+
+            border: 1px solid #d7e0eb;
+            border-radius: 8px;
+        }
+
+
+        /* =====================================================
+           MENSAJES
+           ===================================================== */
+
+        .admin-page .mensaje-exito {
+            margin-top: 15px;
+            padding: 12px;
+
+            background: #eef9ee;
+            color: #215c35;
+
+            border: 1px solid #9acb9a;
+            border-radius: 6px;
+        }
+
+        .admin-page .mensaje-error {
+            margin-top: 15px;
+            padding: 12px;
+
+            background: #fff0f0;
+            color: #8b1e1e;
+
+            border: 1px solid #d8a0a0;
+            border-radius: 6px;
+        }
+
+
+        /* =====================================================
+           PIE DE PÁGINA
+           ===================================================== */
+
+        .admin-page footer {
+            margin-top: 55px;
+            padding: 24px 20px;
+
+            background: #dfe7f1;
+            color: #506176;
+
+            border-top: 1px solid #c8d3e1;
+
+            text-align: center;
+        }
+
+        .admin-page footer p {
+            margin: 0;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .admin-page > header {
+                padding: 20px 5%;
+            }
+
+            .admin-page main {
+                width: 94%;
+
+                margin-top: 22px;
+            }
+
+            .admin-page #seccionLogin,
+            .admin-page #panelPedidos,
+            .admin-page #panelInventario,
+            .admin-page #panelClientes {
+                padding: 20px;
+            }
+
+            .admin-page .admin-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .admin-page .admin-nav button,
+            .admin-page .admin-nav #btnCerrarSesion {
+                width: 100%;
+
+                margin-left: 0;
+            }
+
+            .admin-page .admin-filtros {
+                align-items: stretch;
+            }
+
+            .admin-page .admin-filtros > div,
+            .admin-page .admin-filtros select,
+            .admin-page .admin-filtros button {
+                width: 100%;
+                min-width: 0;
+            }
+        }
     </style>
+
 </head>
+
 
 <body class="admin-page">
 
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+
     <header>
+
         <h1>Mapuescuela</h1>
-        <p>Área de administración</p>
+
+        <p>
+            Área de administración
+        </p>
 
         <button
             type="button"
             onclick="window.location.href='index.html'">
             Volver al inicio
         </button>
+
     </header>
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+         ===================================================== -->
 
     <main>
 
+        <!-- =================================================
+             LOGIN ADMINISTRATIVO
+             ================================================= -->
+
         <section id="seccionLogin">
-            <h2>Acceso administrativo</h2>
+
+            <h2>
+                Acceso administrativo
+            </h2>
 
             <p>
                 Ingrese sus credenciales para acceder a la gestión
                 de pedidos, inventario y clientes.
             </p>
+
 
             <form id="formLogin">
 
@@ -60,7 +688,9 @@
                     type="text"
                     id="adminUsuario"
                     autocomplete="username"
-                    required>
+                    required
+                >
+
 
                 <label for="adminPassword">
                     Contraseña
@@ -70,7 +700,9 @@
                     type="password"
                     id="adminPassword"
                     autocomplete="current-password"
-                    required>
+                    required
+                >
+
 
                 <button type="submit">
                     Iniciar sesión
@@ -78,69 +710,176 @@
 
             </form>
 
+
             <div id="resultadoLogin"></div>
+
         </section>
+
+
+        <!-- =================================================
+             ADMINISTRACIÓN
+             ================================================= -->
 
         <section
             id="seccionAdministracion"
             style="display: none;">
 
-            <h2>Panel de administración</h2>
+            <h2>
+                Panel de administración
+            </h2>
 
             <p>
                 Seleccione la sección que desea administrar.
             </p>
 
-            <nav class="admin-nav" aria-label="Secciones de administración">
-                <button type="button" id="btnMostrarPedidos" class="admin-nav-active" aria-current="page">
+
+            <!-- =============================================
+                 NAVEGACIÓN
+                 ============================================= -->
+
+            <nav
+                class="admin-nav"
+                aria-label="Secciones de administración">
+
+                <button
+                    type="button"
+                    id="btnMostrarPedidos"
+                    class="admin-nav-active"
+                    aria-current="page">
                     Pedidos
                 </button>
-                <button type="button" id="btnMostrarInventario">
+
+                <button
+                    type="button"
+                    id="btnMostrarInventario">
                     Inventario
                 </button>
-                <button type="button" id="btnMostrarClientes">
+
+                <button
+                    type="button"
+                    id="btnMostrarClientes">
                     Clientes
                 </button>
-                <button type="button" id="btnCerrarSesion">
+
+                <button
+                    type="button"
+                    id="btnCerrarSesion">
                     Cerrar sesión
                 </button>
+
             </nav>
+
 
             <hr>
 
+
+            <!-- =================================================
+                 PANEL PEDIDOS
+                 ================================================= -->
+
             <section id="panelPedidos">
 
-                <h2>Gestión de pedidos</h2>
+                <h2>
+                    Gestión de pedidos
+                </h2>
 
                 <p>
                     Desde esta sección se gestionan las tareas
                     administrativas asociadas al proceso de venta.
                 </p>
 
-                <h3>Listado de pedidos</h3>
-                <p>Filtre los pedidos por estado y seleccione «Ver detalle» para consultar uno sin modificarlo.</p>
-                <div class="admin-filtros">
-                    <div>
-                        <label for="filtroEstadoPedidos">Estado del pedido</label>
-                        <select id="filtroEstadoPedidos">
-                            <option value="">Todos los estados</option>
-                            <option value="PENDIENTE_PAGO">Pendiente de pago</option>
-                            <option value="PAGO_EN_REVISION">Pago en revisión</option>
-                            <option value="PAGO_RECHAZADO">Pago rechazado</option>
-                            <option value="PAGO_APROBADO">Pago aprobado</option>
-                            <option value="EN_PREPARACION">En preparación</option>
-                            <option value="LISTO_RETIRO">Listo para retiro</option>
-                            <option value="ENVIADO">Enviado</option>
-                            <option value="FINALIZADO">Finalizado</option>
-                            <option value="CANCELADO">Cancelado</option>
-                        </select>
-                    </div>
-                    <button type="button" id="btnActualizarPedidos">Actualizar listado</button>
-                </div>
-                <div id="resultadoListadoPedidos" role="status" aria-live="polite"></div>
-                <div id="listadoPedidos" class="tabla-contenedor"></div>
 
-                <h3>Consultar pedido por número</h3>
+                <h3>
+                    Listado de pedidos
+                </h3>
+
+                <p>
+                    Filtre los pedidos por estado y seleccione
+                    «Ver detalle» para consultar uno sin modificarlo.
+                </p>
+
+
+                <div class="admin-filtros">
+
+                    <div>
+
+                        <label for="filtroEstadoPedidos">
+                            Estado del pedido
+                        </label>
+
+                        <select id="filtroEstadoPedidos">
+
+                            <option value="">
+                                Todos los estados
+                            </option>
+
+                            <option value="PENDIENTE_PAGO">
+                                Pendiente de pago
+                            </option>
+
+                            <option value="PAGO_EN_REVISION">
+                                Pago en revisión
+                            </option>
+
+                            <option value="PAGO_RECHAZADO">
+                                Pago rechazado
+                            </option>
+
+                            <option value="PAGO_APROBADO">
+                                Pago aprobado
+                            </option>
+
+                            <option value="EN_PREPARACION">
+                                En preparación
+                            </option>
+
+                            <option value="LISTO_RETIRO">
+                                Listo para retiro
+                            </option>
+
+                            <option value="ENVIADO">
+                                Enviado
+                            </option>
+
+                            <option value="FINALIZADO">
+                                Finalizado
+                            </option>
+
+                            <option value="CANCELADO">
+                                Cancelado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btnActualizarPedidos">
+                        Actualizar listado
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="resultadoListadoPedidos"
+                    role="status"
+                    aria-live="polite">
+                </div>
+
+
+                <div
+                    id="listadoPedidos"
+                    class="tabla-contenedor">
+                </div>
+
+
+                <h3>
+                    Consultar pedido por número
+                </h3>
+
 
                 <form id="formConsultarPedido">
 
@@ -152,7 +891,9 @@
                         type="number"
                         id="adminPedido"
                         min="1"
-                        required>
+                        required
+                    >
+
 
                     <button type="submit">
                         Consultar tarea actual
@@ -160,13 +901,17 @@
 
                 </form>
 
+
                 <div id="resultadoAdmin"></div>
+
 
                 <div
                     id="accionesPedido"
                     style="display: none;">
 
-                    <h3>Acciones disponibles</h3>
+                    <h3>
+                        Acciones disponibles
+                    </h3>
 
                     <div id="detalleTarea"></div>
 
@@ -176,16 +921,24 @@
 
             </section>
 
+
+            <!-- =================================================
+                 PANEL INVENTARIO
+                 ================================================= -->
+
             <section
                 id="panelInventario"
                 style="display: none;">
 
-                <h2>Gestión de inventario</h2>
+                <h2>
+                    Gestión de inventario
+                </h2>
 
                 <p>
                     Consulte los productos registrados, agregue nuevos
                     productos y actualice sus datos o existencias.
                 </p>
+
 
                 <button
                     type="button"
@@ -193,18 +946,22 @@
                     Actualizar listado
                 </button>
 
+
                 <button
                     type="button"
                     id="btnNuevoProducto">
                     Agregar producto
                 </button>
 
+
                 <div id="resultadoInventario"></div>
+
 
                 <div
                     id="listadoInventario"
                     class="tabla-contenedor">
                 </div>
+
 
                 <section
                     id="panelFormularioProducto"
@@ -214,11 +971,14 @@
                         Agregar producto
                     </h3>
 
+
                     <form id="formProducto">
 
                         <input
                             type="hidden"
-                            id="inventarioIdProducto">
+                            id="inventarioIdProducto"
+                        >
+
 
                         <label for="inventarioNombre">
                             Nombre
@@ -228,7 +988,9 @@
                             type="text"
                             id="inventarioNombre"
                             maxlength="150"
-                            required>
+                            required
+                        >
+
 
                         <label for="inventarioDescripcion">
                             Descripción
@@ -236,7 +998,9 @@
 
                         <textarea
                             id="inventarioDescripcion"
-                            rows="3"></textarea>
+                            rows="3">
+                        </textarea>
+
 
                         <label for="inventarioCategoria">
                             Categoría
@@ -245,7 +1009,9 @@
                         <input
                             type="text"
                             id="inventarioCategoria"
-                            maxlength="100">
+                            maxlength="100"
+                        >
+
 
                         <label for="inventarioPrecio">
                             Precio ($)
@@ -256,7 +1022,9 @@
                             id="inventarioPrecio"
                             min="0"
                             step="1"
-                            required>
+                            required
+                        >
+
 
                         <label for="inventarioStock">
                             Stock
@@ -267,7 +1035,9 @@
                             id="inventarioStock"
                             min="0"
                             step="1"
-                            required>
+                            required
+                        >
+
 
                         <label for="inventarioEstado">
                             Estado
@@ -287,6 +1057,7 @@
 
                         </select>
 
+
                         <label for="inventarioImagen">
                             Imagen (ruta o URL)
                         </label>
@@ -294,11 +1065,14 @@
                         <input
                             type="text"
                             id="inventarioImagen"
-                            maxlength="500">
+                            maxlength="500"
+                        >
+
 
                         <button type="submit">
                             Guardar producto
                         </button>
+
 
                         <button
                             type="button"
@@ -312,16 +1086,24 @@
 
             </section>
 
+
+            <!-- =================================================
+                 PANEL CLIENTES
+                 ================================================= -->
+
             <section
                 id="panelClientes"
                 style="display: none;">
 
-                <h2>Gestión de clientes</h2>
+                <h2>
+                    Gestión de clientes
+                </h2>
 
                 <p>
                     Consulte los clientes registrados, agregue nuevos
                     clientes y actualice sus datos de contacto.
                 </p>
+
 
                 <button
                     type="button"
@@ -329,18 +1111,22 @@
                     Actualizar listado
                 </button>
 
+
                 <button
                     type="button"
                     id="btnNuevoCliente">
                     Agregar cliente
                 </button>
 
+
                 <div id="resultadoClientes"></div>
+
 
                 <div
                     id="listadoClientes"
                     class="tabla-contenedor">
                 </div>
+
 
                 <section
                     id="panelFormularioCliente"
@@ -350,11 +1136,14 @@
                         Agregar cliente
                     </h3>
 
+
                     <form id="formCliente">
 
                         <input
                             type="hidden"
-                            id="clienteId">
+                            id="clienteId"
+                        >
+
 
                         <label for="clienteRut">
                             RUT
@@ -364,7 +1153,9 @@
                             type="text"
                             id="clienteRut"
                             maxlength="20"
-                            required>
+                            required
+                        >
+
 
                         <label for="clienteRazonSocial">
                             Razón social
@@ -374,7 +1165,9 @@
                             type="text"
                             id="clienteRazonSocial"
                             maxlength="150"
-                            required>
+                            required
+                        >
+
 
                         <label for="clienteNombreContacto">
                             Nombre de contacto
@@ -383,7 +1176,9 @@
                         <input
                             type="text"
                             id="clienteNombreContacto"
-                            maxlength="150">
+                            maxlength="150"
+                        >
+
 
                         <label for="clienteEmail">
                             Correo electrónico
@@ -393,7 +1188,9 @@
                             type="email"
                             id="clienteEmail"
                             maxlength="150"
-                            required>
+                            required
+                        >
+
 
                         <label for="clienteTelefono">
                             Teléfono
@@ -402,7 +1199,9 @@
                         <input
                             type="text"
                             id="clienteTelefono"
-                            maxlength="30">
+                            maxlength="30"
+                        >
+
 
                         <label for="clienteDireccion">
                             Dirección
@@ -411,11 +1210,14 @@
                         <input
                             type="text"
                             id="clienteDireccion"
-                            maxlength="255">
+                            maxlength="255"
+                        >
+
 
                         <button type="submit">
                             Guardar cliente
                         </button>
+
 
                         <button
                             type="button"
@@ -433,26 +1235,85 @@
 
     </main>
 
+
+    <!-- =====================================================
+         PIE DE PÁGINA
+         ===================================================== -->
+
     <footer>
+
         <p>
             Mapuescuela - Proyecto Integración de Plataformas
         </p>
+
     </footer>
 
+
+    <!-- =====================================================
+         CONTROL VISUAL DE NAVEGACIÓN
+         ===================================================== -->
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const botones = ["btnMostrarPedidos", "btnMostrarInventario", "btnMostrarClientes"]
-                .map(id => document.getElementById(id));
-            botones.forEach(boton => boton.addEventListener("click", () => {
-                botones.forEach(otro => {
-                    otro.classList.remove("admin-nav-active");
-                    otro.removeAttribute("aria-current");
-                });
-                boton.classList.add("admin-nav-active");
-                boton.setAttribute("aria-current", "page");
-            }));
-        });
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+                const botones = [
+                    "btnMostrarPedidos",
+                    "btnMostrarInventario",
+                    "btnMostrarClientes"
+                ]
+                    .map(
+                        id =>
+                            document.getElementById(id)
+                    );
+
+
+                botones.forEach(
+                    boton =>
+                        boton.addEventListener(
+                            "click",
+                            () => {
+
+                                botones.forEach(
+                                    otro => {
+
+                                        otro.classList.remove(
+                                            "admin-nav-active"
+                                        );
+
+                                        otro.removeAttribute(
+                                            "aria-current"
+                                        );
+
+                                    }
+                                );
+
+
+                                boton.classList.add(
+                                    "admin-nav-active"
+                                );
+
+                                boton.setAttribute(
+                                    "aria-current",
+                                    "page"
+                                );
+
+                            }
+                        )
+                );
+
+            }
+        );
+
     </script>
+
+
+    <!-- =====================================================
+         JAVASCRIPT DEL SISTEMA
+         ===================================================== -->
+
     <script src="/seguridad.js"></script>
     <script src="admin.js"></script>
     <script src="inventario.js"></script>

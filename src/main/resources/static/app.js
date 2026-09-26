@@ -1,9 +1,15 @@
-
 const API_BASE = "/api";
 
 let clienteAutenticado = false;
+let accionPendiente = null;
+
+
+/* =========================================================
+   INICIALIZACIÓN
+   ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+
     document
         .getElementById("formLogin")
         .addEventListener("submit", iniciarSesion);
@@ -28,33 +34,240 @@ document.addEventListener("DOMContentLoaded", () => {
         .getElementById("btnActualizarPedidos")
         .addEventListener("click", cargarPedidos);
 
+
+    document
+        .getElementById("btnIrPedidos")
+        .addEventListener("click", () => {
+
+            if (clienteAutenticado) {
+
+                mostrarSeccion("pedido");
+
+            } else {
+
+                accionPendiente = "pedido";
+                mostrarSeccion("acceso");
+            }
+        });
+
+
+    document
+        .getElementById("btnVerCatalogo")
+        .addEventListener("click", () => {
+
+            accionPendiente = null;
+            mostrarSeccion("catalogo");
+        });
+
+
+    document
+        .getElementById("btnVerMisPedidos")
+        .addEventListener("click", async () => {
+
+            if (clienteAutenticado) {
+
+                await cargarPedidos();
+
+                mostrarSeccion("pedidos");
+
+            } else {
+
+                accionPendiente = "pedidos";
+
+                mostrarSeccion("acceso");
+            }
+        });
+
+
+    ocultarSeccionesContenido();
+
     cargarProductos();
+
     consultarSesion();
 });
 
-async function consultarSesion() {
-    const estado = document.getElementById("estadoSesion");
 
-    try {
-        const respuesta = await fetch(
-            `${API_BASE}/clientes/sesion`,
-            { credentials: "same-origin" }
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+
+function ocultarSeccionesContenido() {
+
+    document
+        .getElementById("seccionAcceso")
+        .hidden = true;
+
+    document
+        .getElementById("seccionCatalogo")
+        .hidden = true;
+
+    document
+        .getElementById("seccionPedido")
+        .hidden = true;
+
+    document
+        .getElementById("seccionPedidos")
+        .hidden = true;
+
+    document
+        .getElementById("seccionComprobante")
+        .hidden = true;
+}
+
+
+function mostrarSeccion(seccion) {
+
+    ocultarSeccionesContenido();
+
+    let destino = null;
+
+
+    if (seccion === "acceso") {
+
+        destino =
+            document.getElementById(
+                "seccionAcceso"
+            );
+
+    } else if (seccion === "catalogo") {
+
+        destino =
+            document.getElementById(
+                "seccionCatalogo"
+            );
+
+    } else if (seccion === "pedido") {
+
+        if (!clienteAutenticado) {
+
+            accionPendiente =
+                "pedido";
+
+            destino =
+                document.getElementById(
+                    "seccionAcceso"
+                );
+
+        } else {
+
+            destino =
+                document.getElementById(
+                    "seccionPedido"
+                );
+        }
+
+    } else if (seccion === "pedidos") {
+
+        if (!clienteAutenticado) {
+
+            accionPendiente =
+                "pedidos";
+
+            destino =
+                document.getElementById(
+                    "seccionAcceso"
+                );
+
+        } else {
+
+            destino =
+                document.getElementById(
+                    "seccionPedidos"
+                );
+        }
+
+    } else if (seccion === "comprobante") {
+
+        if (!clienteAutenticado) {
+
+            destino =
+                document.getElementById(
+                    "seccionAcceso"
+                );
+
+        } else {
+
+            destino =
+                document.getElementById(
+                    "seccionComprobante"
+                );
+        }
+    }
+
+
+    if (destino) {
+
+        destino.hidden =
+            false;
+
+
+        destino.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+}
+
+
+/* =========================================================
+   SESIÓN DEL CLIENTE
+   ========================================================= */
+
+async function consultarSesion() {
+
+    const estado =
+        document.getElementById(
+            "estadoSesion"
         );
 
+
+    try {
+
+        const respuesta = await fetch(
+            `${API_BASE}/clientes/sesion`,
+            {
+                credentials:
+                    "same-origin"
+            }
+        );
+
+
         if (!respuesta.ok) {
-            throw new Error("No fue posible consultar la sesión.");
+
+            throw new Error(
+                "No fue posible consultar la sesión."
+            );
         }
 
-        const datos = await respuesta.json();
+
+        const datos =
+            await respuesta.json();
+
 
         if (datos.autenticado === true) {
-            actualizarInterfazSesion(true, datos);
+
+            actualizarInterfazSesion(
+                true,
+                datos
+            );
+
+
             await cargarPedidos();
+
         } else {
-            actualizarInterfazSesion(false);
+
+            actualizarInterfazSesion(
+                false
+            );
         }
+
+
     } catch (error) {
-        actualizarInterfazSesion(false);
+
+        actualizarInterfazSesion(
+            false
+        );
+
 
         mostrarMensaje(
             estado,
@@ -64,77 +277,188 @@ async function consultarSesion() {
     }
 }
 
-function actualizarInterfazSesion(autenticado, datos = {}) {
-    clienteAutenticado = autenticado;
 
-    const estado = document.getElementById("estadoSesion");
+function actualizarInterfazSesion(
+    autenticado,
+    datos = {}
+) {
 
-    document.getElementById("formulariosAcceso").hidden =
+    clienteAutenticado =
         autenticado;
 
-    document.getElementById("accionesSesion").hidden =
+
+    const estado =
+        document.getElementById(
+            "estadoSesion"
+        );
+
+
+    const formulariosAcceso =
+        document.getElementById(
+            "formulariosAcceso"
+        );
+
+
+    const sesionPedidos =
+        document.getElementById(
+            "sesionPedidos"
+        );
+
+
+    const nombreClientePedidos =
+        document.getElementById(
+            "nombreClientePedidos"
+        );
+
+
+    formulariosAcceso.hidden =
+        autenticado;
+
+
+    sesionPedidos.hidden =
         !autenticado;
 
-    document.getElementById("seccionPedido").hidden =
-        !autenticado;
-
-    document.getElementById("seccionPedidos").hidden =
-        !autenticado;
-
-    document.getElementById("seccionComprobante").hidden =
-        !autenticado;
 
     if (autenticado) {
-        estado.className = "mensaje-exito";
+
+        const nombreCliente =
+            datos.razonSocial
+            || datos.email
+            || "Cliente";
+
+
+        nombreClientePedidos.textContent =
+            `👤 Cliente: ${nombreCliente}`;
+
+
+        estado.className =
+            "mensaje-exito";
+
+
         estado.textContent =
-            `Sesión iniciada: ${datos.razonSocial || datos.email || "Cliente"}.`;
+            `Sesión iniciada: ${nombreCliente}.`;
+
     } else {
-        estado.className = "";
+
+        nombreClientePedidos.textContent =
+            "👤 Cliente: Cliente";
+
+
+        estado.className =
+            "";
+
+
         estado.textContent =
             "Inicia sesión o registra una cuenta para generar pedidos.";
 
-        document.getElementById("pedidos").replaceChildren();
-        document.getElementById("resultadoPedido").textContent = "";
-        document.getElementById("resultadoComprobante").textContent = "";
+
+        document
+            .getElementById("pedidos")
+            .replaceChildren();
     }
 }
 
+
+/* =========================================================
+   INICIAR SESIÓN
+   ========================================================= */
+
 async function iniciarSesion(evento) {
+
     evento.preventDefault();
 
-    const resultado = document.getElementById("resultadoLogin");
 
-    const datos = {
-        email: document.getElementById("emailLogin").value.trim(),
-        password: document.getElementById("passwordLogin").value
-    };
+    const resultado =
+        document.getElementById(
+            "resultadoLogin"
+        );
+
+
+    const email =
+        document
+            .getElementById("emailLogin")
+            .value
+            .trim();
+
+
+    const password =
+        document
+            .getElementById("passwordLogin")
+            .value;
+
 
     try {
-        const respuesta = await fetchSeguro(
+
+        const respuesta = await fetch(
             `${API_BASE}/clientes/login`,
             {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(datos)
+                method:
+                    "POST",
+
+                headers:
+                    await obtenerHeadersJson(),
+
+                credentials:
+                    "same-origin",
+
+                body:
+                    JSON.stringify({
+                        email: email,
+                        password: password
+                    })
             }
         );
 
+
         if (!respuesta.ok) {
+
             throw new Error(
                 await obtenerMensajeError(
-                    respuesta,
-                    "No fue posible iniciar sesión."
+                    respuesta
                 )
             );
         }
 
-        document.getElementById("formLogin").reset();
-        resultado.textContent = "";
+
+        document
+            .getElementById("formLogin")
+            .reset();
+
+
+        resultado.textContent =
+            "";
+
 
         await consultarSesion();
+
+
+        if (accionPendiente === "pedidos") {
+
+            accionPendiente =
+                null;
+
+
+            await cargarPedidos();
+
+
+            mostrarSeccion(
+                "pedidos"
+            );
+
+        } else {
+
+            accionPendiente =
+                null;
+
+
+            mostrarSeccion(
+                "pedido"
+            );
+        }
+
+
     } catch (error) {
+
         mostrarMensaje(
             resultado,
             `Error al iniciar sesión: ${error.message}`,
@@ -143,52 +467,129 @@ async function iniciarSesion(evento) {
     }
 }
 
+
+/* =========================================================
+   REGISTRAR CLIENTE
+   ========================================================= */
+
 async function registrarCliente(evento) {
+
     evento.preventDefault();
 
-    const resultado = document.getElementById("resultadoRegistro");
 
-    const datos = {
-        rut: document.getElementById("rutRegistro").value.trim(),
-        razonSocial: document
-            .getElementById("razonSocialRegistro").value.trim(),
-        nombreContacto: document
-            .getElementById("nombreContactoRegistro").value.trim(),
-        email: document.getElementById("emailRegistro").value.trim(),
-        telefono: document.getElementById("telefonoRegistro").value.trim(),
-        direccion: document.getElementById("direccionRegistro").value.trim(),
-        password: document.getElementById("passwordRegistro").value
+    const resultado =
+        document.getElementById(
+            "resultadoRegistro"
+        );
+
+
+    const cliente = {
+
+        rut:
+            document
+                .getElementById(
+                    "rutRegistro"
+                )
+                .value
+                .trim(),
+
+        razonSocial:
+            document
+                .getElementById(
+                    "razonSocialRegistro"
+                )
+                .value
+                .trim(),
+
+        nombreContacto:
+            document
+                .getElementById(
+                    "nombreContactoRegistro"
+                )
+                .value
+                .trim(),
+
+        email:
+            document
+                .getElementById(
+                    "emailRegistro"
+                )
+                .value
+                .trim(),
+
+        telefono:
+            document
+                .getElementById(
+                    "telefonoRegistro"
+                )
+                .value
+                .trim(),
+
+        direccion:
+            document
+                .getElementById(
+                    "direccionRegistro"
+                )
+                .value
+                .trim(),
+
+        password:
+            document
+                .getElementById(
+                    "passwordRegistro"
+                )
+                .value
     };
 
+
     try {
-        const respuesta = await fetchSeguro(
+
+        const respuesta = await fetch(
             `${API_BASE}/clientes/registro`,
             {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(datos)
+                method:
+                    "POST",
+
+                headers:
+                    await obtenerHeadersJson(),
+
+                credentials:
+                    "same-origin",
+
+                body:
+                    JSON.stringify(
+                        cliente
+                    )
             }
         );
 
+
         if (!respuesta.ok) {
+
             throw new Error(
                 await obtenerMensajeError(
-                    respuesta,
-                    "No fue posible registrar al cliente."
+                    respuesta
                 )
             );
         }
 
-        document.getElementById("formRegistro").reset();
+
+        document
+            .getElementById(
+                "formRegistro"
+            )
+            .reset();
+
 
         mostrarMensaje(
             resultado,
             "Cliente registrado correctamente. Ahora puedes iniciar sesión.",
             true
         );
+
+
     } catch (error) {
+
         mostrarMensaje(
             resultado,
             `Error al registrar cliente: ${error.message}`,
@@ -197,35 +598,97 @@ async function registrarCliente(evento) {
     }
 }
 
-async function cerrarSesion() {
-    const estado = document.getElementById("estadoSesion");
 
-    try {
-        const respuesta = await fetchSeguro(
-            `${API_BASE}/clientes/logout`,
-            { method: "POST" }
+/* =========================================================
+   CERRAR SESIÓN
+   ========================================================= */
+
+async function cerrarSesion() {
+
+    const estado =
+        document.getElementById(
+            "estadoSesion"
         );
 
+
+    try {
+
+        const respuesta = await fetch(
+            `${API_BASE}/clientes/logout`,
+            {
+                method:
+                    "POST",
+
+                headers:
+                    await obtenerHeadersJson(),
+
+                credentials:
+                    "same-origin"
+            }
+        );
+
+
         if (!respuesta.ok) {
+
             throw new Error(
                 await obtenerMensajeError(
-                    respuesta,
-                    "No fue posible cerrar la sesión."
+                    respuesta
                 )
             );
         }
 
-        actualizarInterfazSesion(false);
 
-        document.getElementById("formPedido").reset();
-        document.getElementById("formComprobante").reset();
-        document.getElementById("formLogin").reset();
+        actualizarInterfazSesion(
+            false
+        );
 
-        // El cierre de sesión invalida la sesión anterior.
-        // Se solicitará un token CSRF nuevo en el siguiente POST.
-        tokenCsrf = null;
-        nombreCabeceraCsrf = null;
+
+        document
+            .getElementById(
+                "formPedido"
+            )
+            .reset();
+
+
+        document
+            .getElementById(
+                "formComprobante"
+            )
+            .reset();
+
+
+        document
+            .getElementById(
+                "formLogin"
+            )
+            .reset();
+
+
+        tokenCsrf =
+            null;
+
+        nombreCabeceraCsrf =
+            null;
+
+        accionPendiente =
+            null;
+
+
+        ocultarSeccionesContenido();
+
+
+        document
+            .querySelector(
+                ".portada-mapuescuela"
+            )
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+
     } catch (error) {
+
         mostrarMensaje(
             estado,
             `Error al cerrar sesión: ${error.message}`,
@@ -234,76 +697,179 @@ async function cerrarSesion() {
     }
 }
 
-async function cargarProductos() {
-    const contenedor = document.getElementById("productos");
-    const selectorProducto = document.getElementById("producto");
 
-    try {
-        const respuesta = await fetch(
-            `${API_BASE}/productos`,
-            { credentials: "same-origin" }
+/* =========================================================
+   PRODUCTOS
+   ========================================================= */
+
+async function cargarProductos() {
+
+    const contenedor =
+        document.getElementById(
+            "productos"
         );
 
+
+    const selectorProducto =
+        document.getElementById(
+            "producto"
+        );
+
+
+    try {
+
+        const respuesta = await fetch(
+            `${API_BASE}/productos`,
+            {
+                credentials:
+                    "same-origin"
+            }
+        );
+
+
         if (!respuesta.ok) {
-            throw new Error("No fue posible obtener los productos.");
+
+            throw new Error(
+                "No fue posible obtener los productos."
+            );
         }
 
-        const productos = await respuesta.json();
+
+        const productos =
+            await respuesta.json();
+
 
         contenedor.replaceChildren();
+
         selectorProducto.replaceChildren();
 
-        const opcionInicial = document.createElement("option");
-        opcionInicial.value = "";
-        opcionInicial.textContent = "Seleccione un producto";
-        selectorProducto.appendChild(opcionInicial);
 
-        if (!Array.isArray(productos) || productos.length === 0) {
+        const opcionInicial =
+            document.createElement(
+                "option"
+            );
+
+
+        opcionInicial.value =
+            "";
+
+
+        opcionInicial.textContent =
+            "Seleccione un producto";
+
+
+        selectorProducto.appendChild(
+            opcionInicial
+        );
+
+
+        if (
+            !Array.isArray(productos)
+            || productos.length === 0
+        ) {
+
             agregarParrafo(
                 contenedor,
                 "No hay productos registrados."
             );
+
             return;
         }
 
-        productos.forEach((producto) => {
-            const tarjeta = document.createElement("div");
-            tarjeta.className = "producto-card";
 
-            const titulo = document.createElement("h3");
-            titulo.textContent = producto.nombre;
-            tarjeta.appendChild(titulo);
+        productos.forEach(
+            (producto) => {
 
-            agregarParrafo(
-                tarjeta,
-                `Precio: $${formatearNumero(producto.precio)}`
-            );
+                const tarjeta =
+                    document.createElement(
+                        "div"
+                    );
 
-            agregarParrafo(
-                tarjeta,
-                `Stock: ${producto.stock}`
-            );
 
-            agregarParrafo(
-                tarjeta,
-                `Estado: ${producto.estado}`
-            );
+                tarjeta.className =
+                    "producto-card";
 
-            contenedor.appendChild(tarjeta);
 
-            if (
-                producto.stock > 0
-                && producto.estado === "DISPONIBLE"
-            ) {
-                const opcion = document.createElement("option");
-                opcion.value = producto.idProducto;
-                opcion.textContent =
-                    `${producto.nombre} - Stock: ${producto.stock}`;
+                const titulo =
+                    document.createElement(
+                        "h3"
+                    );
 
-                selectorProducto.appendChild(opcion);
+
+                titulo.textContent =
+                    producto.nombre;
+
+
+                tarjeta.appendChild(
+                    titulo
+                );
+
+
+                agregarParrafo(
+                    tarjeta,
+                    `Precio: ${formatearMoneda(
+                        producto.precio
+                    )}`
+                );
+
+
+                agregarParrafo(
+                    tarjeta,
+                    `Stock: ${producto.stock}`
+                );
+
+
+                agregarParrafo(
+                    tarjeta,
+                    `Estado: ${
+                        producto.activo === false
+                            ? "NO DISPONIBLE"
+                            : "DISPONIBLE"
+                    }`
+                );
+
+
+                contenedor.appendChild(
+                    tarjeta
+                );
+
+
+                if (
+                    producto.activo !== false
+                    && Number(
+                        producto.stock
+                    ) > 0
+                ) {
+
+                    const opcion =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    opcion.value =
+                        producto.idProducto;
+
+
+                    opcion.textContent =
+                        `${producto.nombre} - ${formatearMoneda(
+                            producto.precio
+                        )}`;
+
+
+                    selectorProducto.appendChild(
+                        opcion
+                    );
+                }
             }
-        });
+        );
+
+
     } catch (error) {
+
+        contenedor.replaceChildren();
+
+
         mostrarMensaje(
             contenedor,
             `Error al cargar productos: ${error.message}`,
@@ -312,30 +878,61 @@ async function cargarProductos() {
     }
 }
 
+
+/* =========================================================
+   CREAR PEDIDO
+   ========================================================= */
+
 async function crearPedido(evento) {
+
     evento.preventDefault();
 
-    const resultado = document.getElementById("resultadoPedido");
+
+    const resultado =
+        document.getElementById(
+            "resultadoPedido"
+        );
+
 
     if (!clienteAutenticado) {
+
         mostrarMensaje(
             resultado,
             "Debes iniciar sesión para generar un pedido.",
             false
         );
+
         return;
     }
 
-    const idProducto = Number(
-        document.getElementById("producto").value
-    );
 
-    const cantidad = Number(
-        document.getElementById("cantidad").value
-    );
+    const idProducto =
+        Number(
+            document
+                .getElementById(
+                    "producto"
+                )
+                .value
+        );
+
+
+    const cantidad =
+        Number(
+            document
+                .getElementById(
+                    "cantidad"
+                )
+                .value
+        );
+
 
     const modalidadEntrega =
-        document.getElementById("modalidad").value;
+        document
+            .getElementById(
+                "modalidad"
+            )
+            .value;
+
 
     if (
         !Number.isInteger(idProducto)
@@ -343,59 +940,98 @@ async function crearPedido(evento) {
         || !Number.isInteger(cantidad)
         || cantidad < 1
     ) {
+
         mostrarMensaje(
             resultado,
-            "Debe completar correctamente los datos del pedido.",
+            "Selecciona un producto y una cantidad válida.",
             false
         );
+
         return;
     }
 
+
     const pedido = {
-        modalidadEntrega: modalidadEntrega,
+
+        modalidadEntrega:
+            modalidadEntrega,
+
         productos: [
             {
-                idProducto: idProducto,
-                cantidad: cantidad
+                idProducto:
+                    idProducto,
+
+                cantidad:
+                    cantidad
             }
         ]
     };
 
+
     try {
-        const respuesta = await fetchSeguro(
+
+        const respuesta = await fetch(
             `${API_BASE}/pedidos`,
             {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(pedido)
+                method:
+                    "POST",
+
+                headers:
+                    await obtenerHeadersJson(),
+
+                credentials:
+                    "same-origin",
+
+                body:
+                    JSON.stringify(
+                        pedido
+                    )
             }
         );
 
+
         if (!respuesta.ok) {
+
             throw new Error(
                 await obtenerMensajeError(
-                    respuesta,
-                    "No fue posible generar el pedido."
+                    respuesta
                 )
             );
         }
 
-        const pedidoCreado = await respuesta.json();
+
+        const pedidoCreado =
+            await respuesta.json();
+
 
         mostrarMensaje(
             resultado,
-            `Pedido N.º ${pedidoCreado.idPedido} generado correctamente. Estado: ${pedidoCreado.estado}.`,
+            `Pedido ${pedidoCreado.idPedido} creado correctamente.`,
             true
         );
 
-        document.getElementById("formPedido").reset();
-        document.getElementById("cantidad").value = 1;
+
+        document
+            .getElementById(
+                "formPedido"
+            )
+            .reset();
+
+
+        document
+            .getElementById(
+                "cantidad"
+            )
+            .value = 1;
+
 
         await cargarProductos();
+
         await cargarPedidos();
+
+
     } catch (error) {
+
         mostrarMensaje(
             resultado,
             `Error al generar pedido: ${error.message}`,
@@ -404,76 +1040,199 @@ async function crearPedido(evento) {
     }
 }
 
+
+/* =========================================================
+   MIS PEDIDOS
+   ========================================================= */
+
 async function cargarPedidos() {
-    if (!clienteAutenticado) {
-        return;
-    }
 
-    const contenedor = document.getElementById("pedidos");
-
-    try {
-        const respuesta = await fetch(
-            `${API_BASE}/pedidos`,
-            { credentials: "same-origin" }
+    const contenedor =
+        document.getElementById(
+            "pedidos"
         );
 
-        if (!respuesta.ok) {
-            throw new Error("No fue posible obtener los pedidos.");
-        }
 
-        const pedidos = await respuesta.json();
+    if (!clienteAutenticado) {
 
         contenedor.replaceChildren();
 
-        if (!Array.isArray(pedidos) || pedidos.length === 0) {
-            agregarParrafo(
-                contenedor,
-                "No tienes pedidos registrados."
-            );
-            return;
-        }
+        return;
+    }
 
-        const tablaContenedor = document.createElement("div");
-        tablaContenedor.className = "tabla-contenedor";
 
-        const tabla = document.createElement("table");
-        const encabezado = document.createElement("thead");
-        const filaEncabezado = document.createElement("tr");
+    try {
 
-        ["Pedido", "Estado", "Modalidad", "Total"].forEach(
-            (nombreColumna) => {
-                const celda = document.createElement("th");
-                celda.textContent = nombreColumna;
-                filaEncabezado.appendChild(celda);
+        const respuesta = await fetch(
+            `${API_BASE}/pedidos`,
+            {
+                credentials:
+                    "same-origin"
             }
         );
 
-        encabezado.appendChild(filaEncabezado);
-        tabla.appendChild(encabezado);
 
-        const cuerpo = document.createElement("tbody");
+        if (!respuesta.ok) {
 
-        pedidos.forEach((pedido) => {
-            const fila = document.createElement("tr");
+            throw new Error(
+                "No fue posible obtener los pedidos."
+            );
+        }
 
-            [
-                pedido.idPedido,
-                pedido.estado,
-                pedido.modalidadEntrega,
-                `$${formatearNumero(pedido.total)}`
-            ].forEach((valor) => {
-                const celda = document.createElement("td");
-                celda.textContent = String(valor ?? "");
-                fila.appendChild(celda);
-            });
 
-            cuerpo.appendChild(fila);
-        });
+        const pedidos =
+            await respuesta.json();
 
-        tabla.appendChild(cuerpo);
-        tablaContenedor.appendChild(tabla);
-        contenedor.appendChild(tablaContenedor);
+
+        contenedor.replaceChildren();
+
+
+        if (
+            !Array.isArray(pedidos)
+            || pedidos.length === 0
+        ) {
+
+            agregarParrafo(
+                contenedor,
+                "Aún no tienes pedidos registrados."
+            );
+
+            return;
+        }
+
+
+        const tablaContenedor =
+            document.createElement(
+                "div"
+            );
+
+
+        tablaContenedor.className =
+            "tabla-contenedor";
+
+
+        const tabla =
+            document.createElement(
+                "table"
+            );
+
+
+        const thead =
+            document.createElement(
+                "thead"
+            );
+
+
+        const filaCabecera =
+            document.createElement(
+                "tr"
+            );
+
+
+        [
+            "Pedido",
+            "Estado",
+            "Modalidad",
+            "Total"
+        ].forEach(
+            (texto) => {
+
+                const th =
+                    document.createElement(
+                        "th"
+                    );
+
+
+                th.textContent =
+                    texto;
+
+
+                filaCabecera.appendChild(
+                    th
+                );
+            }
+        );
+
+
+        thead.appendChild(
+            filaCabecera
+        );
+
+
+        tabla.appendChild(
+            thead
+        );
+
+
+        const tbody =
+            document.createElement(
+                "tbody"
+            );
+
+
+        pedidos.forEach(
+            (pedido) => {
+
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                [
+                    pedido.idPedido,
+                    pedido.estado,
+                    pedido.modalidadEntrega,
+                    formatearMoneda(
+                        pedido.total
+                    )
+                ].forEach(
+                    (valor) => {
+
+                        const td =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        td.textContent =
+                            valor ?? "";
+
+
+                        fila.appendChild(
+                            td
+                        );
+                    }
+                );
+
+
+                tbody.appendChild(
+                    fila
+                );
+            }
+        );
+
+
+        tabla.appendChild(
+            tbody
+        );
+
+
+        tablaContenedor.appendChild(
+            tabla
+        );
+
+
+        contenedor.appendChild(
+            tablaContenedor
+        );
+
+
     } catch (error) {
+
+        contenedor.replaceChildren();
+
+
         mostrarMensaje(
             contenedor,
             `Error al cargar pedidos: ${error.message}`,
@@ -482,123 +1241,230 @@ async function cargarPedidos() {
     }
 }
 
+
+/* =========================================================
+   COMPROBANTE DE PAGO
+   ========================================================= */
+
 async function subirComprobante(evento) {
+
     evento.preventDefault();
 
+
     const resultado =
-        document.getElementById("resultadoComprobante");
+        document.getElementById(
+            "resultadoComprobante"
+        );
+
 
     if (!clienteAutenticado) {
+
         mostrarMensaje(
             resultado,
             "Debes iniciar sesión para adjuntar un comprobante.",
             false
         );
+
         return;
     }
 
-    const idPedido = Number(
-        document.getElementById("pedidoComprobante").value
-    );
 
-    const campoArchivo =
-        document.getElementById("archivoComprobante");
+    const idPedido =
+        Number(
+            document
+                .getElementById(
+                    "pedidoComprobante"
+                )
+                .value
+        );
+
+
+    const archivo =
+        document
+            .getElementById(
+                "archivoComprobante"
+            )
+            .files[0];
+
 
     if (
         !Number.isInteger(idPedido)
         || idPedido < 1
-        || campoArchivo.files.length === 0
+        || !archivo
     ) {
+
         mostrarMensaje(
             resultado,
-            "Debe indicar el número de pedido y seleccionar un archivo.",
+            "Indica un pedido válido y selecciona un archivo.",
             false
         );
+
         return;
     }
 
-    const formulario = new FormData();
-    formulario.append("archivo", campoArchivo.files[0]);
+
+    const datos =
+        new FormData();
+
+
+    datos.append(
+        "archivo",
+        archivo
+    );
+
 
     try {
-        const respuesta = await fetchSeguro(
-            `${API_BASE}/comprobantes?idPedido=${idPedido}`,
+
+        const headers =
+            await obtenerHeadersCsrf();
+
+
+        const respuesta = await fetch(
+            `${API_BASE}/pedidos/${idPedido}/comprobante`,
             {
-                method: "POST",
-                body: formulario
+                method:
+                    "POST",
+
+                headers:
+                    headers,
+
+                credentials:
+                    "same-origin",
+
+                body:
+                    datos
             }
         );
 
+
         if (!respuesta.ok) {
+
             throw new Error(
                 await obtenerMensajeError(
-                    respuesta,
-                    "No fue posible subir el comprobante."
+                    respuesta
                 )
             );
         }
 
-        const comprobante = await respuesta.json();
 
         mostrarMensaje(
             resultado,
-            `Comprobante registrado correctamente para el pedido N.º ${comprobante.idPedido}. Estado del pedido: ${comprobante.estadoPedido}.`,
+            "Comprobante adjuntado correctamente.",
             true
         );
 
-        document.getElementById("formComprobante").reset();
+
+        document
+            .getElementById(
+                "formComprobante"
+            )
+            .reset();
+
 
         await cargarPedidos();
+
+
     } catch (error) {
+
         mostrarMensaje(
             resultado,
-            `Error al subir comprobante: ${error.message}`,
+            `Error al adjuntar comprobante: ${error.message}`,
             false
         );
     }
 }
 
-async function obtenerMensajeError(respuesta, mensajePredeterminado) {
-    const texto = await respuesta.text();
 
-    if (!texto) {
-        return mensajePredeterminado;
-    }
+/* =========================================================
+   FUNCIONES AUXILIARES
+   ========================================================= */
+
+function agregarParrafo(
+    contenedor,
+    texto
+) {
+
+    const parrafo =
+        document.createElement(
+            "p"
+        );
+
+
+    parrafo.textContent =
+        texto;
+
+
+    contenedor.appendChild(
+        parrafo
+    );
+}
+
+
+function mostrarMensaje(
+    contenedor,
+    mensaje,
+    exito
+) {
+
+    contenedor.textContent =
+        mensaje;
+
+
+    contenedor.className =
+        exito
+            ? "mensaje-exito"
+            : "mensaje-error";
+}
+
+
+async function obtenerMensajeError(
+    respuesta
+) {
 
     try {
-        const datos = JSON.parse(texto);
 
-        if (typeof datos.mensaje === "string") {
-            return datos.mensaje;
-        }
+        const datos =
+            await respuesta.json();
 
-        if (typeof datos.error === "string") {
-            return datos.error;
-        }
+
+        return datos.message
+            || datos.mensaje
+            || datos.error
+            || `Error HTTP ${respuesta.status}`;
+
+
     } catch (error) {
-        // La respuesta no contiene JSON.
+
+        return `Error HTTP ${respuesta.status}`;
+    }
+}
+
+
+function formatearMoneda(valor) {
+
+    const numero =
+        Number(valor);
+
+
+    if (!Number.isFinite(numero)) {
+
+        return "$0";
     }
 
-    return mensajePredeterminado;
-}
 
-function agregarParrafo(contenedor, contenido) {
-    const parrafo = document.createElement("p");
-    parrafo.textContent = contenido;
-    contenedor.appendChild(parrafo);
-}
+    return new Intl.NumberFormat(
+        "es-CL",
+        {
+            style:
+                "currency",
 
-function mostrarMensaje(contenedor, mensaje, exito) {
-    contenedor.className =
-        exito ? "mensaje-exito" : "mensaje-error";
+            currency:
+                "CLP",
 
-    contenedor.textContent = mensaje;
-}
-
-function formatearNumero(valor) {
-    if (valor === null || valor === undefined) {
-        return "0";
-    }
-
-    return Number(valor).toLocaleString("es-CL");
+            maximumFractionDigits:
+                0
+        }
+    ).format(
+        numero
+    );
 }
